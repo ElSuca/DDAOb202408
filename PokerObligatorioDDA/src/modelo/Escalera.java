@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo;
-public class Administrador extends Usuario{
+public class Escalera extends Figura {
     
-    public Administrador(String ci, String password, String nombreCompleto) {
-        super(ci, password, nombreCompleto);
+    public Escalera(String nombre) {
+        super(nombre);
     }
     
 }
