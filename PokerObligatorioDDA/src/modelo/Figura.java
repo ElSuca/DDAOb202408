@@ -10,7 +10,6 @@ public abstract class Figura {
         this.nombre = nombre;
     }
 
-    
     public String getNombre() {
         return nombre;
     }
