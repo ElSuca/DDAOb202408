@@ -5,6 +5,8 @@
 package controladores;
 
 import modelo.Administrador;
+import modelo.EventosGenerales;
+import modelo.Fachada;
 import observador.Observable;
 import observador.Observador;
 import vistaAdministrador.CrearMesa;
@@ -16,12 +18,23 @@ import vistas.vistaCrearMesa;
  */
 public class CrearMesaController implements Observador{
 
+    private vistaCrearMesa vista;
     public CrearMesaController(vistaCrearMesa vista) {
+        this.vista = vista;
     }
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(evento.equals(EventosGenerales.eventos.cambioListaMesas)){
+            vista.mostrarMesas();
+        }
     }
-    
+
+    public void crearMesa(String jugadores, String luz, String comision) {
+        try{
+        Fachada.getInstancia().agregarMesa(jugadores, luz, comision);
+        }catch(NumberFormatException ex){
+            vista.mostrarError(ex.getMessage());
+        }
+    }
 }

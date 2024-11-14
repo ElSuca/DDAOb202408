@@ -3,31 +3,35 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo;
-import java.util.List;
+import java.util.ArrayList;
+import panelCartasPoker.CartaPoker;
 
 public class Mazo {
-    private List<Carta> cartas;
-    private int cantidad;
+    private ArrayList<Carta> cartas;
 
-    public Mazo(List<Carta> cartas, int cantidad) {
-        this.cartas = cartas;
-        this.cantidad = cantidad;
+    public Mazo() {
+        this.cartas = new ArrayList<Carta>();
+        agregarCartas();
     }
 
-    public List<Carta> getCartas() {
+    public ArrayList<Carta> getCartas() {
         return cartas;
     }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void AgregarCartas(Carta carta) {
-        this.cartas.add(carta);
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
     
+    public void agregarCartas(){
+        for(int i = 0; i <= 13; i++){
+            this.cartas.add(new Carta(i, CartaPoker.CORAZON));
+        }
+        for(int i = 0; i <= 13; i++){
+            this.cartas.add(new Carta(i, CartaPoker.DIAMANTE));
+        }
+        for(int i = 0; i <= 13; i++){
+            this.cartas.add(new Carta(i, CartaPoker.TREBOL));
+        }
+        for(int i = 0; i <= 13; i++){
+            this.cartas.add(new Carta(i, CartaPoker.PIQUE));
+        }
+        
+    }
+   
 }

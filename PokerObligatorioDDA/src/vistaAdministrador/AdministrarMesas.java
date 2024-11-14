@@ -4,8 +4,11 @@
  */
 package vistaAdministrador;
 
+import java.util.ArrayList;
 import modelo.Administrador;
+import modelo.EventosGenerales;
 import modelo.Fachada;
+import modelo.Mesa;
 import observador.Observable;
 import observador.Observador;
 
@@ -24,7 +27,7 @@ public class AdministrarMesas extends javax.swing.JDialog implements Observador{
         initComponents();
         setTitle("ADMINISTRACION DE MESAS - ADMIN: " + a.getNombreCompleto().toUpperCase());
         admin = a;
-//      mostrarConexiones();
+        mostrarMesas();
         Fachada.getInstancia().agregarObservador(this);
     }
 
@@ -38,7 +41,7 @@ public class AdministrarMesas extends javax.swing.JDialog implements Observador{
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaMesas = new javax.swing.JList<>();
+        listaMesas = new javax.swing.JList();
         lblMontoTotal = new javax.swing.JLabel();
         lblNumMesa = new javax.swing.JLabel();
         lblJugadores = new javax.swing.JLabel();
@@ -225,11 +228,25 @@ public class AdministrarMesas extends javax.swing.JDialog implements Observador{
     private javax.swing.JLabel lblTotalApoMano;
     private javax.swing.JLabel lblTotalApostado;
     private javax.swing.JList<String> listaManos;
-    private javax.swing.JList<String> listaMesas;
+    private javax.swing.JList listaMesas;
     // End of variables declaration//GEN-END:variables
+
+    private void mostrarMesas() {
+        ArrayList<Mesa> mesas = Fachada.getInstancia().getMesas();
+        ArrayList<String> listado = new ArrayList();
+        for(Mesa m:mesas){
+            listado.add("Mesa N°"+m.getNumeroMesa()+"|"+m.getJugadores().size()
+                    +"/"+m.getCantJugadores()+"|Luz:"+m.getLuz()+"|Mano:"+m.getManos().size()
+                    +"|Total:"+m.getPozo()+"|Com.:"+m.getComision()
+                    +"%|Rec.:"+m.getTotalRec()+"|Estado:"+m.getEstado().toString());
+        }
+        listaMesas.setListData(listado.toArray());
+    }
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(evento.equals(EventosGenerales.eventos.cambioListaMesas)){
+            mostrarMesas();
+        }
     }
 }

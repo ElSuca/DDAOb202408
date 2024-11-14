@@ -3,29 +3,37 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo;
-public class Carta {
-    private int valor;
-    private Palo palo;
 
-    public Carta(int valor, Palo palo) {
+import panelCartasPoker.CartaPoker;
+
+public class Carta implements CartaPoker {
+    private int valor;
+    private String palo;
+    private boolean visible = true;
+
+    public Carta(int valor, String palo) {
         this.valor = valor;
         this.palo = palo;
     }
-
-    public int getValor() {
+    
+    @Override
+    public int getValorCarta() {
         return valor;
     }
 
-    public Palo getPalo() {
+    @Override
+    public String getPaloCarta() {
         return palo;
     }
 
-    public void setValor(int valor) {
-        this.valor = valor;
+    @Override
+    public boolean estaVisible() {
+        return visible;
     }
 
-    public void setPalo(Palo palo) {
-        this.palo = palo;
+    @Override
+    public void setVisible(boolean b) {
+        visible = b;
     }
     
     

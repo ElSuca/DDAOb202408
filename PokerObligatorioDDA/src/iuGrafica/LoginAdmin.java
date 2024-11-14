@@ -14,7 +14,7 @@ import vistaAdministrador.AdministrarMesas;
  * @author Usuario
  */
 public class LoginAdmin extends Login {
-    
+
     public LoginAdmin(Frame parent, boolean modal) {
         super(parent, modal, "Login como ADMINISTRADOR");
     }
@@ -26,7 +26,7 @@ public class LoginAdmin extends Login {
 
     @Override
     public void proximoCasoUso(Object usuario) {
-        new AdministrarMesas(null, false,(Administrador)usuario).setVisible(true);
+        new AdministrarMesas(null, false, (Administrador) usuario).setVisible(true);
     }
-    
+
 }

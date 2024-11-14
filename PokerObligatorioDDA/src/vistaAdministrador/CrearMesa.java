@@ -5,7 +5,9 @@
 package vistaAdministrador;
 
 import controladores.CrearMesaController;
+import javax.swing.JOptionPane;
 import modelo.Administrador;
+import modelo.Fachada;
 import vistas.vistaCrearMesa;
 
 /**
@@ -119,7 +121,7 @@ public class CrearMesa extends javax.swing.JDialog implements vistaCrearMesa {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearMesaActionPerformed
-        // TODO add your handling code here:
+        agregarMesa();
     }//GEN-LAST:event_btnCrearMesaActionPerformed
 
 
@@ -133,4 +135,23 @@ public class CrearMesa extends javax.swing.JDialog implements vistaCrearMesa {
     private javax.swing.JTextField txtJugadores;
     private javax.swing.JTextField txtLuz;
     // End of variables declaration//GEN-END:variables
+
+    private void agregarMesa() {
+       
+        String cantJugadores = txtJugadores.getText();
+        String luz = txtLuz.getText();
+        String comision = txtComision.getText();
+        controlador.crearMesa(cantJugadores, luz, comision);
+    }
+    
+    
+    @Override
+    public void mostrarMesas() {
+        Fachada.getInstancia().getMesas();
+    }
+
+    @Override
+    public void mostrarError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

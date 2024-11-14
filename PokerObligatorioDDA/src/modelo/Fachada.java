@@ -4,6 +4,8 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+import modelo.EventosGenerales.eventos;
 import observador.Observable;
 import vistaAdministrador.AdministrarMesas;
 
@@ -40,5 +42,14 @@ public class Fachada extends Observable {
 
     public UsuarioJugador loginJugador(String ci, String pwd) {
         return sAcceso.loginJugador(ci, pwd);
+    }
+
+    public ArrayList<Mesa> getMesas() {
+        return sPoker.getMesas();
+    }
+    
+    public void agregarMesa(String jugadores, String luz, String comision){
+        sPoker.agregarMesa(jugadores, luz, comision);
+        avisar(eventos.cambioListaMesas);
     }
 }

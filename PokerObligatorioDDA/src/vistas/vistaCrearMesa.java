@@ -9,5 +9,6 @@ package vistas;
  * @author Usuario
  */
 public interface vistaCrearMesa {
-    
+    public void mostrarMesas();
+    public void mostrarError(String message);
 }
