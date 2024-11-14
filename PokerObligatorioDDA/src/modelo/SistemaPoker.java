@@ -6,13 +6,5 @@ package modelo;
 import java.util.List;
 
 public class SistemaPoker {
-    private List<UsuarioJugador> jugadores;
-
-    public List<UsuarioJugador> getJugadores() {
-        return jugadores;
-    }
-    public void AgregarJugadores(UsuarioJugador jugador) {
-        this.jugadores.add(jugador);
-    }
     
 }

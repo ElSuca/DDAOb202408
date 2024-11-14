@@ -3,16 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo;
-import java.util.List;
+import java.util.ArrayList;
 
 public class SistemaAdministrador {
-    private List<Administrador> administradores;
-
-    public List<Administrador> getAdministradores() {
-        return administradores;
-    }
     
-    public void AgregarAdministradores(Administrador admin){
-        this.administradores.add(admin);
-    }
 }

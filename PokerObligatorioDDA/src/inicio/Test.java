@@ -12,6 +12,7 @@ import iuGrafica.Inicio;
  */
 public class Test {
     public static void main(String[]args){
+        DatosPrueba.cargar();
         new Inicio().setVisible(true);
     }
 }

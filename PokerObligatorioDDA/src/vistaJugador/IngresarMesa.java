@@ -4,19 +4,25 @@
  */
 package vistaJugador;
 
+import modelo.Fachada;
+import modelo.UsuarioJugador;
 import vistas.vistaIngresarMesa;
 
 /**
  *
  * @author Usuario
  */
-public class IngresarMesa extends javax.swing.JFrame implements vistaIngresarMesa {
+public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMesa {
 
     /**
      * Creates new form IngresarMesa
      */
-    public IngresarMesa() {
+    public UsuarioJugador usuario;
+    public IngresarMesa(java.awt.Frame parent, boolean modal,UsuarioJugador a) {
+        super(parent, modal);
         initComponents();
+        setTitle("El Poker - Jugador: " + a.getNombreCompleto().toUpperCase());
+        usuario = a;
     }
 
     /**
@@ -39,7 +45,7 @@ public class IngresarMesa extends javax.swing.JFrame implements vistaIngresarMes
         jButton1 = new javax.swing.JButton();
         lblError = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblNombre.setText("Jugador:");
@@ -127,41 +133,6 @@ public class IngresarMesa extends javax.swing.JFrame implements vistaIngresarMes
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IngresarMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IngresarMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IngresarMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(IngresarMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IngresarMesa().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

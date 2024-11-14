@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo;
+
+import java.util.ArrayList;
+
 public abstract class Usuario {
     private String ci;
     private String password;
@@ -37,7 +40,9 @@ public abstract class Usuario {
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
-
+    
+    
+    
     @Override
     public String toString() {
         return "Usuario{" + "ci=" + ci + ", password=" + password + ", nombreCompleto=" + nombreCompleto + '}';
