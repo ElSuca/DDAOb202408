@@ -4,19 +4,26 @@
  */
 package vistaAdministrador;
 
+import controladores.CrearMesaController;
+import modelo.Administrador;
 import vistas.vistaCrearMesa;
 
 /**
  *
  * @author Usuario
  */
-public class CrearMesa extends javax.swing.JFrame implements vistaCrearMesa {
+public class CrearMesa extends javax.swing.JDialog implements vistaCrearMesa {
 
     /**
      * Creates new form CrearMesa
      */
-    public CrearMesa() {
+    private CrearMesaController controlador;
+    
+    public CrearMesa(java.awt.Dialog parent, boolean modal) {
+        super(parent, modal);
         initComponents();
+        setLocationRelativeTo(parent);
+        controlador = new CrearMesaController(this);
     }
 
     /**
@@ -37,7 +44,7 @@ public class CrearMesa extends javax.swing.JFrame implements vistaCrearMesa {
         btnCrearMesa = new javax.swing.JButton();
         lblError = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Cantidad de Jugadores:");
@@ -115,40 +122,6 @@ public class CrearMesa extends javax.swing.JFrame implements vistaCrearMesa {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCrearMesaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CrearMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CrearMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CrearMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CrearMesa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CrearMesa().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearMesa;

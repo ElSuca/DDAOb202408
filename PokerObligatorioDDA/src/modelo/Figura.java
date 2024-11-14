@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo;
+
+import java.util.ArrayList;
+
+
 public abstract class Figura {
     private String nombre;
 
@@ -17,5 +21,7 @@ public abstract class Figura {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    
+    public abstract boolean validar(ArrayList<Carta> cartas);
     
 }

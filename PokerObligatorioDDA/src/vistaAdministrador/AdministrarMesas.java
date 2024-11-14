@@ -4,19 +4,28 @@
  */
 package vistaAdministrador;
 
-import vistas.vistaAdministrarMesas;
+import modelo.Administrador;
+import modelo.Fachada;
+import observador.Observable;
+import observador.Observador;
 
 /**
  *
  * @author Usuario
  */
-public class AdministrarMesas extends javax.swing.JFrame implements vistaAdministrarMesas{
+public class AdministrarMesas extends javax.swing.JDialog implements Observador{
 
     /**
      * Creates new form AdministrarMesas
      */
-    public AdministrarMesas() {
+    public Administrador admin;
+    public AdministrarMesas(java.awt.Frame parent, boolean modal,Administrador a) {
+        super(parent, modal);
         initComponents();
+        setTitle("ADMINISTRACION DE MESAS - ADMIN: " + a.getNombreCompleto().toUpperCase());
+        admin = a;
+//      mostrarConexiones();
+        Fachada.getInstancia().agregarObservador(this);
     }
 
     /**
@@ -51,7 +60,7 @@ public class AdministrarMesas extends javax.swing.JFrame implements vistaAdminis
         jMenu1 = new javax.swing.JMenu();
         btnCrearMesa = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         listaMesas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(listaMesas);
@@ -191,43 +200,8 @@ public class AdministrarMesas extends javax.swing.JFrame implements vistaAdminis
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearMesaActionPerformed
-        // TODO add your handling code here:
+        new CrearMesa(this, false).setVisible(true);
     }//GEN-LAST:event_btnCrearMesaActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdministrarMesas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdministrarMesas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdministrarMesas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdministrarMesas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdministrarMesas().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnCrearMesa;
@@ -253,4 +227,9 @@ public class AdministrarMesas extends javax.swing.JFrame implements vistaAdminis
     private javax.swing.JList<String> listaManos;
     private javax.swing.JList<String> listaMesas;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actualizar(Object evento, Observable origen) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

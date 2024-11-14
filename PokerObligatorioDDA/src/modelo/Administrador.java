@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo;
+
+import java.util.ArrayList;
+
 public class Administrador extends Usuario{
     
     public Administrador(String ci, String password, String nombreCompleto) {

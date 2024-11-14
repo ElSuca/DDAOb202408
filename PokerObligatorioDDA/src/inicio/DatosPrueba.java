@@ -4,6 +4,8 @@
  */
 package inicio;
 
+import modelo.Fachada;
+
 /**
  *
  * @author Usuario
@@ -33,4 +35,23 @@ public class DatosPrueba {
             ● Par: Dos cartas de igual valor sin importar el palo.
             ● Sin figura: Las cartas no cumplen ninguno de los juegos anteriores
     */
+    public static void cargar(){
+        Fachada fachada = Fachada.getInstancia();
+
+        fachada.agregarAdministrador("100", "100", "A 100");
+        fachada.agregarAdministrador("200", "101", "A 200");
+
+        fachada.agregarJugador("0", "0", "J0", 0);
+        fachada.agregarJugador("1", "1", "J1", 1000);
+        fachada.agregarJugador("2", "2", "J2", 2000);
+        fachada.agregarJugador("3", "3", "J3", 3000);
+        fachada.agregarJugador("4", "4", "J4", 4000);
+        fachada.agregarJugador("5", "5", "J5", 5000);
+        fachada.agregarJugador("6", "6", "J6", 6000);
+        fachada.agregarJugador("7", "7", "J7", 7000);
+        fachada.agregarJugador("8", "8", "J8", 8000);
+        fachada.agregarJugador("9", "9", "J9", 9000);
+        fachada.agregarJugador("10", "10", "El Tuki", 27478);
+        fachada.agregarJugador("11", "11", "El Tiki", 99999);
+    }
 }

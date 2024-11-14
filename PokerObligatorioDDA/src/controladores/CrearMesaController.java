@@ -4,14 +4,20 @@
  */
 package controladores;
 
+import modelo.Administrador;
 import observador.Observable;
 import observador.Observador;
+import vistaAdministrador.CrearMesa;
+import vistas.vistaCrearMesa;
 
 /**
  *
  * @author Usuario
  */
 public class CrearMesaController implements Observador{
+
+    public CrearMesaController(vistaCrearMesa vista) {
+    }
 
     @Override
     public void actualizar(Object evento, Observable origen) {

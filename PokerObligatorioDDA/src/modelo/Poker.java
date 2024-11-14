@@ -3,10 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo;
+
+import java.util.ArrayList;
+
 public class Poker extends Figura {
     
     public Poker(String nombre) {
         super(nombre);
+    }
+
+    @Override
+    public boolean validar(ArrayList<Carta> cartas) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }
