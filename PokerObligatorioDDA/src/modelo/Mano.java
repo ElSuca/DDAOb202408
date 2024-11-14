@@ -4,6 +4,8 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Usuario
@@ -14,13 +16,18 @@ public class Mano {
     private EstadoMano estado;
     private int valorMano;
     private Mesa mesa;
+    private ArrayList<UsuarioJugador> jugadores;
+    private UsuarioJugador ganador;
 
-    public Mano(Figura figuraGanadora, EstadoMano estado, int valorMano, Mesa mesa) {
+    public Mano(Figura figuraGanadora, EstadoMano estado, int valorMano, 
+            Mesa mesa, ArrayList<UsuarioJugador> jugadores) {
         this.numeroMano = mesa.getManos().size()+1;
-        this.figuraGanadora = null;
+        this.figuraGanadora = new SinFigura("Sin Figura");
         this.estado = EstadoMano.EsperandoApuesta;
         this.mesa = mesa;
         this.valorMano = mesa.getLuz();
+        this.jugadores = jugadores;
+        this.ganador = new UsuarioJugador("0000000-0", "----------", "Nadie", 0000);
     }
 
     public Figura getFiguraGanadora() {
@@ -61,6 +68,22 @@ public class Mano {
 
     public void setNumeroMano(int numeroMano) {
         this.numeroMano = numeroMano;
+    }
+
+    public ArrayList<UsuarioJugador> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(ArrayList<UsuarioJugador> jugadores) {
+        this.jugadores = jugadores;
+    }
+
+    public UsuarioJugador getGanador() {
+        return ganador;
+    }
+
+    public void setGanador(UsuarioJugador ganador) {
+        this.ganador = ganador;
     }
 
     
