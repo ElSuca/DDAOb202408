@@ -42,4 +42,14 @@ public class SistemaAcceso {
         }
         return null;
     }
+
+    public UsuarioJugador getJugador(UsuarioJugador jugador) {
+        UsuarioJugador ret = null;
+        for(UsuarioJugador j: jugadores){
+            if(j.equals(jugador)){
+                ret = jugador;
+            }
+        }
+        return ret;
+    }
 }

@@ -39,6 +39,10 @@ public class Fachada extends Observable {
     public void agregarJugador(String ci, String pwd, String nombreCompleto, int saldoInicial) {
         sAcceso.agregarJugador(ci, pwd, nombreCompleto, saldoInicial);
     }
+    
+    public UsuarioJugador getJugador(UsuarioJugador jugador){
+        return sAcceso.getJugador(jugador);
+    }
 
     public UsuarioJugador loginJugador(String ci, String pwd) {
         return sAcceso.loginJugador(ci, pwd);

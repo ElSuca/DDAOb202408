@@ -7,11 +7,11 @@ package vistaAdministrador;
 import controladores.ControladorAdministrarMesas;
 import java.util.ArrayList;
 import modelo.Administrador;
-import modelo.EventosGenerales;
-import modelo.Fachada;
+//import modelo.EventosGenerales;
+//import modelo.Fachada;
 import modelo.Mano;
 import modelo.Mesa;
-import observador.Observable;
+//import observador.Observable;
 import vistas.vistaAdministrarMesas;
 
 /**

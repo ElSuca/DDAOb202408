@@ -4,6 +4,7 @@
  */
 package vistaJugador;
 
+import controladores.CrearMesaController;
 import vistas.vistaJugarPoker;
 
 /**
@@ -12,13 +13,16 @@ import vistas.vistaJugarPoker;
  */
 public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
 
+    //private PokerController controlador;
     /**
      * Creates new form JugarPojer
      */
-    public JugarPoker() {
-        initComponents();
-    }
-
+//    public JugadorPoker(java.awt.JDialog parent, boolean modal) {
+//        super(parent, modal);
+//        initComponents();
+//        setLocationRelativeTo(parent);
+//        controlador = new CrearMesaController(this);
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

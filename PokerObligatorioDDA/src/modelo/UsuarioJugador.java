@@ -10,4 +10,14 @@ public class UsuarioJugador extends Usuario{
         super(ci, password, nombreCompleto);
         this.saldo = saldo;
     }
+
+    public int getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(int saldo) {
+        this.saldo = saldo;
+    }
+    
+    
 }

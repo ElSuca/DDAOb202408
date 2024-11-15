@@ -9,5 +9,8 @@ package modelo;
  * @author Usuario
  */
 public class EventosGenerales {
-    public enum eventos{cambioListaMesas};
+    public enum eventos{
+        cambioListaMesas,
+        cambioSaldoJugador
+    };
 }
