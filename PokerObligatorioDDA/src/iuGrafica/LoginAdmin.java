@@ -4,9 +4,11 @@
  */
 package iuGrafica;
 
+import excepciones.LoginException;
 import java.awt.Frame;
 import modelo.Administrador;
 import modelo.Fachada;
+import modelo.Sesion;
 import vistaAdministrador.AdministrarMesas;
 
 /**
@@ -20,13 +22,13 @@ public class LoginAdmin extends Login {
     }
 
     @Override
-    public Object llamarLogin(String ci, String password) {
-        return Fachada.getInstancia().loginAdministrador(ci, password);
+    public Object llamarLogin(Sesion sesion, String ci, String password) throws LoginException{
+        return Fachada.getInstancia().loginAdministrador(sesion, ci, password);
     }
 
     @Override
-    public void proximoCasoUso(Object usuario) {
-        new AdministrarMesas(null, false, (Administrador) usuario).setVisible(true);
+    public void proximoCasoUso(Sesion sesion, Object usuario) {
+        new AdministrarMesas(null, false, (Administrador) usuario, sesion).setVisible(true);
     }
 
 }

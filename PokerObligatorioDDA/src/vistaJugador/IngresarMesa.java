@@ -7,7 +7,9 @@ package vistaJugador;
 //import modelo.Fachada;
 import controladores.IngresarMesaController;
 import java.util.ArrayList;
+import modelo.Fachada;
 import modelo.Mesa;
+import modelo.Sesion;
 import modelo.UsuarioJugador;
 import vistas.vistaIngresarMesa;
 
@@ -16,15 +18,18 @@ import vistas.vistaIngresarMesa;
  * @author Usuario
  */
 public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMesa {
-    
+
     public UsuarioJugador usuario;
     private IngresarMesaController controlador;
-    
-    public IngresarMesa(java.awt.Frame parent, boolean modal,UsuarioJugador a) {
+    public Sesion sesion;
+
+    public IngresarMesa(java.awt.Frame parent, boolean modal, UsuarioJugador a, Sesion s) {
         super(parent, modal);
         initComponents();
         setTitle("El Poker - Jugador: " + a.getNombreCompleto().toUpperCase());
         usuario = a;
+        sesion = s;
+        mostrarJugador();
         controlador = new IngresarMesaController(this);
     }
 
@@ -40,15 +45,21 @@ public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMe
         lblNombre = new javax.swing.JLabel();
         lblSaldo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaMesas = new javax.swing.JList<>();
+        listaMesas = new javax.swing.JList();
         lblNroMesa = new javax.swing.JLabel();
         lblJugadores = new javax.swing.JLabel();
         lblLuz = new javax.swing.JLabel();
         lblComision = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnIngresar = new javax.swing.JButton();
         lblError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblNombre.setText("Jugador:");
@@ -76,9 +87,14 @@ public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMe
         lblComision.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblComision.setText("Porc. de Comisión:");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 102, 255));
-        jButton1.setText("INGRESAR");
+        btnIngresar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnIngresar.setForeground(new java.awt.Color(0, 102, 255));
+        btnIngresar.setText("INGRESAR");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarActionPerformed(evt);
+            }
+        });
 
         lblError.setForeground(new java.awt.Color(204, 0, 0));
 
@@ -93,19 +109,15 @@ public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMe
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(lblNroMesa, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                                        .addComponent(lblComision, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblLuz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblJugadores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(18, 18, 18))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblNroMesa, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                                    .addComponent(lblComision, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblLuz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblJugadores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
@@ -132,7 +144,7 @@ public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMe
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -146,9 +158,17 @@ public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMe
         seleccionMesa();
     }//GEN-LAST:event_listaMesasValueChanged
 
-       
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        controlador.jugarPoker(usuario, listaMesas.getSelectedIndex());
+    }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        Fachada.getInstancia().logout(sesion);
+    }//GEN-LAST:event_formWindowClosed
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnIngresar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblComision;
     private javax.swing.JLabel lblError;
@@ -157,7 +177,7 @@ public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMe
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNroMesa;
     private javax.swing.JLabel lblSaldo;
-    private javax.swing.JList<String> listaMesas;
+    private javax.swing.JList listaMesas;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -166,23 +186,23 @@ public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMe
         for (Mesa m : mesas) {
             listado.add("Mesa N°" + m.getNumeroMesa());
         }
-        //listaMesas.setListData(listado.toArray());
+        listaMesas.setListData(listado.toArray());
     }
 
     @Override
-    public void mostrarJugador(UsuarioJugador jugador) {
-        lblNombre.setText("Jugador:" + jugador.getNombreCompleto());
-        lblSaldo.setText("Saldo:" + jugador.getSaldo());
+    public void mostrarJugador() {
+        lblNombre.setText("Jugador: " + usuario.getNombreCompleto());
+        lblSaldo.setText("Saldo: " + usuario.getSaldo());
     }
-    
+
     private void seleccionMesa() {
         controlador.seleccionMesa(listaMesas.getSelectedIndex());
     }
-    
+
     @Override
-    public void mostrarDetallesMesa(int numeroMesa, int cantidadJugadores, int luz, int comision) {
+    public void mostrarDetallesMesa(int numeroMesa, int cantidadJugadores, int jugadores, int luz, int comision) {
         lblNroMesa.setText("Número de Mesa: " + numeroMesa);
-        lblJugadores.setText("Jugadores: " + cantidadJugadores + " / 5");
+        lblJugadores.setText("Jugadores: " + jugadores + " / " + cantidadJugadores);
         lblLuz.setText("Apuesta base: " + luz);
         lblComision.setText("Porc. Comisión: " + comision);
     }
@@ -200,4 +220,10 @@ public class IngresarMesa extends javax.swing.JDialog implements vistaIngresarMe
         lblLuz.setText("Apuesta base:");
         lblComision.setText("Porc. Comisión:");
     }
+
+    @Override
+    public void mostrarError(String message) {
+        lblError.setText(message);
+    }
+
 }

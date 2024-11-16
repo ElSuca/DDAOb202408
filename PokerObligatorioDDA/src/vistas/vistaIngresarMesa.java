@@ -14,11 +14,13 @@ import modelo.UsuarioJugador;
 public interface vistaIngresarMesa {
     public void mostrarMesas(ArrayList<Mesa> mesas);
     
-    public void mostrarJugador(UsuarioJugador jugador);
+    public void mostrarJugador();
     
     public void limpiarDetallesJugador();
     
     public void limpiarDetallesMesa();
     
-    public void mostrarDetallesMesa(int numeroMesa, int cantidadJugadores, int luz, int comision);
+    public void mostrarDetallesMesa(int numeroMesa, int cantidadJugadores, int jugadores, int luz, int comision);
+
+    public void mostrarError(String message);
 }

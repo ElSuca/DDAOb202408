@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controladores;
+import excepciones.PokerException;
 import java.util.ArrayList;
 import modelo.EventosGenerales;
 import modelo.Fachada;
@@ -10,6 +11,7 @@ import modelo.Mesa;
 import modelo.UsuarioJugador;
 import observador.Observable;
 import observador.Observador;
+import vistaJugador.JugarPoker;
 import vistas.vistaIngresarMesa;
 
 /**
@@ -29,7 +31,7 @@ public class IngresarMesaController implements Observador {
                 evento.equals(EventosGenerales.eventos.cambioSaldoJugador)) {
             resultadoMesas = Fachada.getInstancia().getMesas();
             vista.mostrarMesas(resultadoMesas);
-            vista.mostrarJugador(Fachada.getInstancia().getJugador(resultadoJugador));
+            vista.mostrarJugador();
         }
     }
     
@@ -44,22 +46,30 @@ public class IngresarMesaController implements Observador {
         vista.mostrarMesas(resultadoMesas);
     }
     
-    public void saldoJugador(){
-        if(resultadoJugador != null){
-            vista.mostrarJugador(resultadoJugador);
-        } else vista.limpiarDetallesJugador();
-    }
-    
     public void seleccionMesa(int indice) {
         if (resultadoMesas != null && indice >= 0) {
             Mesa seleccionada = resultadoMesas.get(indice);
             vista.mostrarDetallesMesa(
                     seleccionada.getNumeroMesa(),
                     seleccionada.getCantJugadores(),
+                    seleccionada.getJugadores().size(),
                     seleccionada.getLuz(),
                     seleccionada.getComision()
             );
         }else vista.limpiarDetallesMesa();
+    }
+
+    public void jugarPoker(UsuarioJugador usuario, int indice) {
+        if (resultadoMesas != null && indice >= 0) {
+            Mesa seleccionada = resultadoMesas.get(indice);
+            try{
+                Fachada.getInstancia().ingresarMesa(usuario, seleccionada);
+                new JugarPoker(null, false,(UsuarioJugador)usuario).setVisible(true);
+            }
+            catch(PokerException ex){
+                vista.mostrarError(ex.getMessage());
+            }
+        }
     }
 
 }

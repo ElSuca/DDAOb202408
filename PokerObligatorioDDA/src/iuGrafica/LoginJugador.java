@@ -4,8 +4,10 @@
  */
 package iuGrafica;
 
+import excepciones.LoginException;
 import java.awt.Frame;
 import modelo.Fachada;
+import modelo.Sesion;
 import modelo.UsuarioJugador;
 import vistaJugador.IngresarMesa;
 
@@ -20,13 +22,15 @@ public class LoginJugador extends Login {
     }
 
     @Override
-    public Object llamarLogin(String ci, String password) {
-        return Fachada.getInstancia().loginJugador(ci, password);
+    public Object llamarLogin(Sesion sesion, String ci, String password) throws LoginException{
+        return Fachada.getInstancia().loginJugador(sesion, ci, password);
     }
 
     @Override
-    public void proximoCasoUso(Object usuario) {
-        new IngresarMesa(null, false,(UsuarioJugador)usuario).setVisible(true);
+    public void proximoCasoUso(Sesion sesion, Object usuario) {
+        new IngresarMesa(null, false,(UsuarioJugador)usuario, sesion).setVisible(true);
     }
+    
+    
     
 }

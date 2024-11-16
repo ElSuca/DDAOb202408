@@ -4,7 +4,9 @@
  */
 package iuGrafica;
 
+import excepciones.LoginException;
 import javax.swing.JOptionPane;
+import modelo.Sesion;
 import vistaAdministrador.AdministrarMesas;
 
 /**
@@ -16,7 +18,7 @@ public abstract class Login extends javax.swing.JDialog {
     /**
      * Creates new form Login
      */
-    public Login(java.awt.Frame parent, boolean modal,String titulo) {
+    public Login(java.awt.Frame parent, boolean modal, String titulo) {
         super(parent, modal);
         initComponents();
         setTitle(titulo);
@@ -41,6 +43,7 @@ public abstract class Login extends javax.swing.JDialog {
         txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("C.I");
 
@@ -72,7 +75,7 @@ public abstract class Login extends javax.swing.JDialog {
                         .addGap(60, 60, 60)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnLogin))
                             .addGroup(layout.createSequentialGroup()
@@ -87,21 +90,24 @@ public abstract class Login extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
-                .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnLogin))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(47, 47, 47)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                        .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(50, 50, 50))
         );
 
@@ -122,20 +128,24 @@ public abstract class Login extends javax.swing.JDialog {
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
 
-        private void login() {
+    private void login() {
         String nombre = txtCedula.getText();
         String password = new String(txtPassword.getPassword());
-        
-       
-        Object usuario = llamarLogin(nombre,password);
-        if(usuario==null){
-            JOptionPane.showMessageDialog(this, "Acceso denegado", getTitle(), JOptionPane.ERROR_MESSAGE);
-        }else{
-            dispose();
-            proximoCasoUso(usuario);
+
+        try {
+            Sesion sesion = new Sesion(nombre, password);
+            Object usuario = llamarLogin(sesion, nombre, password);
+            if(usuario != null){
+                dispose();
+                proximoCasoUso(sesion, usuario);
+            } else lblError.setText("Credenciales Inválidas");
+        }
+        catch(LoginException ex){
+            lblError.setText(ex.getMessage());
         }
     }
-    
-    public abstract Object llamarLogin(String nombre,String password);
-    public abstract void proximoCasoUso(Object usuario);
+
+    public abstract Object llamarLogin(Sesion sesion, String nombre, String password) throws LoginException;
+
+    public abstract void proximoCasoUso(Sesion sesion, Object usuario);
 }

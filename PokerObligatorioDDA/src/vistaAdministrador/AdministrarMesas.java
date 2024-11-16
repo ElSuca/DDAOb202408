@@ -7,10 +7,12 @@ package vistaAdministrador;
 import controladores.ControladorAdministrarMesas;
 import java.util.ArrayList;
 import modelo.Administrador;
+import modelo.Fachada;
 //import modelo.EventosGenerales;
 //import modelo.Fachada;
 import modelo.Mano;
 import modelo.Mesa;
+import modelo.Sesion;
 //import observador.Observable;
 import vistas.vistaAdministrarMesas;
 
@@ -25,12 +27,14 @@ public class AdministrarMesas extends javax.swing.JDialog implements vistaAdmini
      */
     private ControladorAdministrarMesas controlador;
     public Administrador admin;
+    public Sesion sesion;
 
-    public AdministrarMesas(java.awt.Frame parent, boolean modal, Administrador a) {
+    public AdministrarMesas(java.awt.Frame parent, boolean modal, Administrador a, Sesion s) {
         super(parent, modal);
         initComponents();
         setTitle("ADMINISTRACION DE MESAS - ADMIN: " + a.getNombreCompleto().toUpperCase());
         admin = a;
+        sesion = s;
         controlador = new ControladorAdministrarMesas(this);
     }
 
@@ -60,6 +64,12 @@ public class AdministrarMesas extends javax.swing.JDialog implements vistaAdmini
         btnCrearMesa = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         listaMesas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         listaMesas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -169,6 +179,10 @@ public class AdministrarMesas extends javax.swing.JDialog implements vistaAdmini
         seleccionMesa();
     }//GEN-LAST:event_listaMesasValueChanged
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        Fachada.getInstancia().logout(sesion);
+    }//GEN-LAST:event_formWindowClosed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnCrearMesa;
     private javax.swing.JMenu jMenu1;
@@ -220,21 +234,21 @@ public class AdministrarMesas extends javax.swing.JDialog implements vistaAdmini
         mostrarManos(manos);
         lblNumMesa.setText("Número de Mesa: " + numeroMesa);
         lblJugadores.setText("Jugadores: " + jugadores + "/" + cantJugadores);
-        lblLuz.setText("Apuesta Base (Luz): "+luz);
-        lblManoActual.setText("Mano Actual: "+manoActual);
-        lblTotalApostado.setText("Total Apostado: "+pozo);
-        lblComision.setText("Porc. Comisión: "+comision);
-        lblEstadoMesa.setText("Estado Actual: "+estadoMesa);
-        lblRecaudado.setText("TOTAL RECAUDADO: "+totalRec);
+        lblLuz.setText("Apuesta Base (Luz): " + luz);
+        lblManoActual.setText("Mano Actual: " + manoActual);
+        lblTotalApostado.setText("Total Apostado: " + pozo);
+        lblComision.setText("Porc. Comisión: " + comision);
+        lblEstadoMesa.setText("Estado Actual: " + estadoMesa);
+        lblRecaudado.setText("TOTAL RECAUDADO: " + totalRec);
     }
 
     private void mostrarManos(ArrayList<Mano> manos) {
         ArrayList<String> listado = new ArrayList();
         for (Mano m : manos) {
-            listado.add("Mano N°"+m.getNumeroMano()+"Jugadores:"+m.getJugadores().size()
-            +"Total Apostado"+m.getValorMano()+"Estado:"+m.getEstado().toString()
-            +"Ganador"+m.getGanador().getNombreCompleto()
-            +"Figura Ganadora:"+m.getFiguraGanadora().getNombre());
+            listado.add("Mano N°" + m.getNumeroMano() + "Jugadores:" + m.getJugadores().size()
+                    + "Total Apostado" + m.getValorMano() + "Estado:" + m.getEstado().toString()
+                    + "Ganador" + m.getGanador().getNombreCompleto()
+                    + "Figura Ganadora:" + m.getFiguraGanadora().getNombre());
         }
         listaManos.setListData(listado.toArray());
     }

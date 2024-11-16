@@ -4,6 +4,9 @@
  */
 package modelo;
 
+import excepciones.CrearMesaException;
+import excepciones.LoginException;
+import excepciones.PokerException;
 import java.util.ArrayList;
 import modelo.EventosGenerales.eventos;
 import observador.Observable;
@@ -32,28 +35,36 @@ public class Fachada extends Observable {
         sAcceso.agregarAdministrador(ci, pwd, nombreCompleto);
     }
 
-    public Administrador loginAdministrador(String ci, String pwd) {
-        return sAcceso.loginAdministrador(ci, pwd);
+    public Administrador loginAdministrador(Sesion sesion, String ci, String pwd) throws LoginException {
+        return sAcceso.loginAdministrador(sesion, ci, pwd);
     }
 
     public void agregarJugador(String ci, String pwd, String nombreCompleto, int saldoInicial) {
         sAcceso.agregarJugador(ci, pwd, nombreCompleto, saldoInicial);
     }
-    
-    public UsuarioJugador getJugador(UsuarioJugador jugador){
+
+    public UsuarioJugador getJugador(UsuarioJugador jugador) {
         return sAcceso.getJugador(jugador);
     }
 
-    public UsuarioJugador loginJugador(String ci, String pwd) {
-        return sAcceso.loginJugador(ci, pwd);
+    public UsuarioJugador loginJugador(Sesion sesion, String ci, String pwd) throws LoginException {
+        return sAcceso.loginJugador(sesion, ci, pwd);
     }
 
     public ArrayList<Mesa> getMesas() {
         return sPoker.getMesas();
     }
-    
-    public void agregarMesa(String jugadores, String luz, String comision){
+
+    public void agregarMesa(String jugadores, String luz, String comision) throws CrearMesaException {
         sPoker.agregarMesa(jugadores, luz, comision);
         avisar(eventos.cambioListaMesas);
+    }
+
+    public void ingresarMesa(UsuarioJugador usuario, Mesa seleccionada) throws PokerException {
+        sPoker.ingresarMesa(usuario, seleccionada);
+    }
+
+    public void logout(Sesion s) {
+        sAcceso.logout(s);
     }
 }

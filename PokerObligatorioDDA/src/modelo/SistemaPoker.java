@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package modelo;
+import excepciones.CrearMesaException;
+import excepciones.PokerException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +14,33 @@ public class SistemaPoker {
         return mesas;
     }
 
-    void agregarMesa(String jugadores, String luz, String comision) {
+    void agregarMesa(String jugadores, String luz, String comision) throws CrearMesaException {
+        int cantJugadores;
+        int luzNum;
+        int comisionNum;
         try{
-            int cantJugadores = Integer.parseInt(jugadores);
-            int luzNum = Integer.parseInt(luz);
-            int comisionNum = Integer.parseInt(comision);
-            mesas.add(new Mesa(mesas.size()+1,  luzNum, comisionNum, cantJugadores ));
+            cantJugadores = Integer.parseInt(jugadores);
+            luzNum = Integer.parseInt(luz);
+            comisionNum = Integer.parseInt(comision);
+            if(cantJugadores < 5 && cantJugadores >= 2){
+                if(luzNum >= 1){
+                    if(comisionNum >= 1 && comisionNum <= 50){
+                        mesas.add(new Mesa(mesas.size()+1,  luzNum, comisionNum, cantJugadores ));
+                    }else throw new CrearMesaException("Comision inválida");
+                }else throw new CrearMesaException("Apuesta base inválida");
+            }else throw new CrearMesaException("Cantidad de jugadores no válida");
         }
         catch(NumberFormatException ex){
-            
+            throw new CrearMesaException("Uno de los valores no es un número");
         }
+    }
+
+    void ingresarMesa(UsuarioJugador usuario, Mesa seleccionada) throws PokerException {
+        if(seleccionada.getLuz()*10 < usuario.getSaldo()){
+            seleccionada.getJugadores().add(usuario);
+            if(seleccionada.getJugadores().size() == seleccionada.getCantJugadores()) seleccionada.setEstado(EstadoMesa.Iniciada);
+        }
+        else throw new PokerException("Usté' no tiene suficientes fondos");
     }
     
 }

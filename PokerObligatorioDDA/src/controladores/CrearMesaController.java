@@ -4,6 +4,7 @@
  */
 package controladores;
 
+import excepciones.CrearMesaException;
 import modelo.Administrador;
 import modelo.EventosGenerales;
 import modelo.Fachada;
@@ -30,10 +31,10 @@ public class CrearMesaController implements Observador{
         }
     }
 
-    public void crearMesa(String jugadores, String luz, String comision) {
+    public void crearMesa(String jugadores, String luz, String comision) throws CrearMesaException {
         try{
-        Fachada.getInstancia().agregarMesa(jugadores, luz, comision);
-        }catch(NumberFormatException ex){
+            Fachada.getInstancia().agregarMesa(jugadores, luz, comision);
+        }catch(CrearMesaException ex){
             vista.mostrarError(ex.getMessage());
         }
     }

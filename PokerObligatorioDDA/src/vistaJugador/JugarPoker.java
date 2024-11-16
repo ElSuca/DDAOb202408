@@ -4,7 +4,8 @@
  */
 package vistaJugador;
 
-import controladores.CrearMesaController;
+import controladores.PokerController;
+import modelo.UsuarioJugador;
 import vistas.vistaJugarPoker;
 
 /**
@@ -13,16 +14,17 @@ import vistas.vistaJugarPoker;
  */
 public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
 
-    //private PokerController controlador;
-    /**
-     * Creates new form JugarPojer
-     */
-//    public JugadorPoker(java.awt.JDialog parent, boolean modal) {
-//        super(parent, modal);
-//        initComponents();
-//        setLocationRelativeTo(parent);
-//        controlador = new CrearMesaController(this);
-//    }
+    public UsuarioJugador usuario;
+    private PokerController controlador;
+
+    public JugarPoker(java.awt.Frame parent, boolean modal, UsuarioJugador a) {
+        super(parent, modal);
+        initComponents();
+        setTitle("El Poker - Jugador: " + a.getNombreCompleto().toUpperCase());
+        usuario = a;
+        mostrarJugador();
+        controlador = new PokerController(this);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -309,4 +311,9 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
     private javax.swing.JPanel panelContinuar;
     private javax.swing.JTextField txtMonto;
     // End of variables declaration//GEN-END:variables
+
+    private void mostrarJugador() {
+        lblJugador.setText("Jugando como: " + usuario.getNombreCompleto());
+        lblSaldo.setText("Saldo: " + usuario.getSaldo());
+    }
 }

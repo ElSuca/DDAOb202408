@@ -5,8 +5,9 @@
 package vistaAdministrador;
 
 import controladores.CrearMesaController;
-import javax.swing.JOptionPane;
-import modelo.Administrador;
+import excepciones.CrearMesaException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Fachada;
 import vistas.vistaCrearMesa;
 
@@ -47,6 +48,7 @@ public class CrearMesa extends javax.swing.JDialog implements vistaCrearMesa {
         lblError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Cantidad de Jugadores:");
@@ -77,8 +79,8 @@ public class CrearMesa extends javax.swing.JDialog implements vistaCrearMesa {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnCrearMesa))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
@@ -138,10 +140,14 @@ public class CrearMesa extends javax.swing.JDialog implements vistaCrearMesa {
 
     private void agregarMesa() {
        
-        String cantJugadores = txtJugadores.getText();
-        String luz = txtLuz.getText();
-        String comision = txtComision.getText();
-        controlador.crearMesa(cantJugadores, luz, comision);
+        try {
+            String cantJugadores = txtJugadores.getText();
+            String luz = txtLuz.getText();
+            String comision = txtComision.getText();
+            controlador.crearMesa(cantJugadores, luz, comision);
+        } catch (CrearMesaException ex) {
+            mostrarError(ex.getMessage());
+        }
     }
     
     
@@ -152,6 +158,6 @@ public class CrearMesa extends javax.swing.JDialog implements vistaCrearMesa {
 
     @Override
     public void mostrarError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+        lblError.setText(message);
     }
 }
