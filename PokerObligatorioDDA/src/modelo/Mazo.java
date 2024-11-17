@@ -4,17 +4,18 @@
  */
 package modelo;
 import java.util.ArrayList;
+import java.util.Collections;
 import panelCartasPoker.CartaPoker;
 
 public class Mazo {
-    private ArrayList<Carta> cartas;
+    private ArrayList<CartaPoker> cartas;
 
     public Mazo() {
-        this.cartas = new ArrayList<Carta>();
+        this.cartas = new ArrayList<CartaPoker>();
         agregarCartas();
     }
 
-    public ArrayList<Carta> getCartas() {
+    public ArrayList<CartaPoker> getCartas() {
         return cartas;
     }
     
@@ -31,7 +32,10 @@ public class Mazo {
         for(int i = 0; i <= 13; i++){
             this.cartas.add(new Carta(i, CartaPoker.PIQUE));
         }
-        
+    }
+    
+    public void barajar(){
+        Collections.shuffle(this.cartas);
     }
    
 }

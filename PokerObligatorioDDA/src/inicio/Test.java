@@ -5,7 +5,6 @@
 package inicio;
 
 import iuGrafica.Inicio;
-
 /**
  *
  * @author Usuario

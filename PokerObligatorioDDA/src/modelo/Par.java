@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 public class Par extends Figura{
     
-    public Par(String nombre) {
-        super(nombre);
+    public Par(TipoFigura tipoFigura) {
+        super(tipoFigura);
     }
-
+    
     @Override
     public boolean validar(ArrayList<Carta> cartas) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

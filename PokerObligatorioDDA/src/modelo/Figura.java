@@ -8,18 +8,18 @@ import java.util.ArrayList;
 
 
 public abstract class Figura {
-    private String nombre;
+    private TipoFigura tipoFigura;
 
-    public Figura(String nombre) {
-        this.nombre = nombre;
+    public Figura(TipoFigura tipoFigura) {
+        this.tipoFigura = tipoFigura;
     }
 
-    public String getNombre() {
-        return nombre;
+    public TipoFigura getTipoFigura() {
+        return tipoFigura;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setTipo(TipoFigura tipoFigura) {
+        this.tipoFigura = tipoFigura;
     }
     
     public abstract boolean validar(ArrayList<Carta> cartas);

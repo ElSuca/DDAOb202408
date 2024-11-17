@@ -11,6 +11,10 @@ package modelo;
 public class EventosGenerales {
     public enum eventos{
         cambioListaMesas,
-        cambioSaldoJugador
+        cambioSaldoJugador,
+        cambioEstadoMesa,
+        cambioEstadoMano,
+        cambioListaJugadores,
+        cambiaronCartas
     };
 }

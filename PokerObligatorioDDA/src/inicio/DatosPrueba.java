@@ -53,5 +53,11 @@ public class DatosPrueba {
         fachada.agregarJugador("9", "9", "J9", 9000);
         fachada.agregarJugador("10", "10", "El Tuki", 27478);
         fachada.agregarJugador("11", "11", "El Tiki", 99999);
+        
+        fachada.agregarFigura("Poker");
+        fachada.agregarFigura("Escalera");
+        fachada.agregarFigura("Pierna");
+        fachada.agregarFigura("Par");
+        fachada.agregarFigura("SinFigura");
     }
 }

@@ -22,7 +22,7 @@ public class Mano {
     public Mano(Figura figuraGanadora, EstadoMano estado, int valorMano, 
             Mesa mesa, ArrayList<UsuarioJugador> jugadores) {
         this.numeroMano = mesa.getManos().size()+1;
-        this.figuraGanadora = new SinFigura("Sin Figura");
+        this.figuraGanadora = null;
         this.estado = EstadoMano.EsperandoApuesta;
         this.mesa = mesa;
         this.valorMano = mesa.getLuz();

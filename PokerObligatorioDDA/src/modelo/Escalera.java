@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class Escalera extends Figura {
     
-    public Escalera(String nombre) {
-        super(nombre);
+    public Escalera(TipoFigura tipoFigura) {
+        super(tipoFigura);
     }
 
     @Override

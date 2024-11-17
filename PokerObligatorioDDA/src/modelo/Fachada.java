@@ -19,7 +19,6 @@ import vistaAdministrador.AdministrarMesas;
 public class Fachada extends Observable {
 
     private SistemaAcceso sAcceso = new SistemaAcceso();
-    private SistemaAdministrador sAdmin = new SistemaAdministrador();
     private SistemaPoker sPoker = new SistemaPoker();
 
     private static Fachada instancia = new Fachada();
@@ -62,9 +61,39 @@ public class Fachada extends Observable {
 
     public void ingresarMesa(UsuarioJugador usuario, Mesa seleccionada) throws PokerException {
         sPoker.ingresarMesa(usuario, seleccionada);
+        avisar(eventos.cambioEstadoMesa);
+        avisar(eventos.cambioListaJugadores);
     }
 
     public void logout(Sesion s) {
         sAcceso.logout(s);
+    }
+
+    public void agregarFigura(String figura) {
+        sPoker.agregarFigura(figura);
+    }
+
+    public ArrayList<TipoFigura> getFiguras() {
+        return sPoker.getFiguras();
+    }
+    
+    public void salirMesa(UsuarioJugador usuario, Mesa seleccionada){
+        sPoker.salirMesa(usuario, seleccionada);
+        avisar(eventos.cambioListaJugadores);
+        avisar(eventos.cambioEstadoMesa);
+    }
+
+    public void pagarLuz(Mesa mesa) {
+        sPoker.pagarLuz(mesa);
+        avisar(eventos.cambioSaldoJugador);
+    }
+
+    public void barajarCartas(Mesa mesa) {
+        sPoker.barajarCartas(mesa);
+    }
+
+    public void repartirCartas(Mesa mesa) {
+        sPoker.repartirCartas(mesa);
+        avisar(eventos.cambiaronCartas);
     }
 }

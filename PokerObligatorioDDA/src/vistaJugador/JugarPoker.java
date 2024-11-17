@@ -5,7 +5,13 @@
 package vistaJugador;
 
 import controladores.PokerController;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import modelo.EstadoMesa;
+import modelo.Mesa;
+import modelo.TipoFigura;
 import modelo.UsuarioJugador;
+import panelCartasPoker.PanelCartasPokerException;
 import vistas.vistaJugarPoker;
 
 /**
@@ -15,16 +21,20 @@ import vistas.vistaJugarPoker;
 public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
 
     public UsuarioJugador usuario;
+    public Mesa mesa;
     private PokerController controlador;
 
-    public JugarPoker(java.awt.Frame parent, boolean modal, UsuarioJugador a) {
+    public JugarPoker(java.awt.Frame parent, boolean modal, UsuarioJugador a, Mesa m) {
         super(parent, modal);
         initComponents();
         setTitle("El Poker - Jugador: " + a.getNombreCompleto().toUpperCase());
         usuario = a;
+        mesa = m;
         mostrarJugador();
-        controlador = new PokerController(this);
+        controlador = new PokerController(this, mesa);
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,23 +44,23 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelCartasPoker1 = new panelCartasPoker.PanelCartasPoker();
+        panelCartasPoker = new panelCartasPoker.PanelCartasPoker();
         lblJugador = new javax.swing.JLabel();
         lblManoActual = new javax.swing.JLabel();
         lblSaldo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaJugadores = new javax.swing.JList<>();
+        listaJugadores = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
         lblValorPozo = new javax.swing.JLabel();
-        lblValorPozo1 = new javax.swing.JLabel();
+        lblEstadoMano = new javax.swing.JLabel();
         lblValorPozo2 = new javax.swing.JLabel();
         txtMonto = new javax.swing.JTextField();
         btnApostar = new javax.swing.JButton();
         btnNoApostar = new javax.swing.JButton();
         panelContinuar = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnContinuar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
         lblApuesta = new javax.swing.JLabel();
         btnPagar = new javax.swing.JButton();
         btnPasar = new javax.swing.JButton();
@@ -58,7 +68,7 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
         lblGanador = new javax.swing.JLabel();
         lblFiguraJugador = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        listaFiguras = new javax.swing.JList<>();
+        listaFiguras = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -82,8 +92,8 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
         lblValorPozo.setForeground(new java.awt.Color(255, 51, 51));
         lblValorPozo.setText("Valor del Pozo:");
 
-        lblValorPozo1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblValorPozo1.setText("Estado de la Mano:");
+        lblEstadoMano.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblEstadoMano.setText("Estado de la Mano:");
 
         lblValorPozo2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblValorPozo2.setText("Monto:");
@@ -110,11 +120,21 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("¿Continuar?");
 
-        jButton1.setForeground(new java.awt.Color(0, 204, 0));
-        jButton1.setText("Si");
+        btnContinuar.setForeground(new java.awt.Color(0, 204, 0));
+        btnContinuar.setText("Si");
+        btnContinuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContinuarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setForeground(new java.awt.Color(255, 51, 51));
-        jButton2.setText("No");
+        btnSalir.setForeground(new java.awt.Color(255, 51, 51));
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelContinuarLayout = new javax.swing.GroupLayout(panelContinuar);
         panelContinuar.setLayout(panelContinuarLayout);
@@ -124,9 +144,9 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
                 .addContainerGap()
                 .addGroup(panelContinuarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelContinuarLayout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -137,8 +157,8 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addGroup(panelContinuarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -155,6 +175,11 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
 
         btnPasar.setForeground(new java.awt.Color(255, 51, 51));
         btnPasar.setText("Pasar");
+        btnPasar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPasarActionPerformed(evt);
+            }
+        });
 
         lblError.setForeground(new java.awt.Color(255, 51, 51));
 
@@ -177,7 +202,7 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
                                 .addComponent(lblGanador, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(panelCartasPoker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(panelCartasPoker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblJugador, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(328, 328, 328)
@@ -191,27 +216,26 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(lblValorPozo2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGap(53, 53, 53)
-                                                    .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(btnApostar)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(btnNoApostar))
-                                        .addComponent(lblApuesta)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(6, 6, 6)
-                                            .addComponent(btnPagar)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(btnPasar))
-                                        .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblValorPozo2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(53, 53, 53)
+                                                .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnApostar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnNoApostar))
+                                    .addComponent(lblApuesta)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(btnPagar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnPasar))
+                                    .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(lblValorPozo, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblValorPozo1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblEstadoMano, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -228,7 +252,7 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
                     .addComponent(lblManoActual)
                     .addComponent(lblSaldo))
                 .addGap(30, 30, 30)
-                .addComponent(panelCartasPoker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelCartasPoker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
@@ -246,7 +270,7 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblValorPozo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblValorPozo1)
+                                .addComponent(lblEstadoMano)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblValorPozo2)
@@ -284,36 +308,92 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPagarActionPerformed
 
+    private void btnPasarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPasarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPasarActionPerformed
+
+    private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnContinuarActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        if (mesa.getEstado().equals(EstadoMesa.Abierta)) {
+            controlador.salirMesa(usuario);
+            dispose();
+        }
+    }//GEN-LAST:event_btnSalirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApostar;
+    private javax.swing.JButton btnContinuar;
     private javax.swing.JButton btnNoApostar;
     private javax.swing.JButton btnPagar;
     private javax.swing.JButton btnPasar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblApuesta;
     private javax.swing.JLabel lblError;
+    private javax.swing.JLabel lblEstadoMano;
     private javax.swing.JLabel lblFiguraJugador;
     private javax.swing.JLabel lblGanador;
     private javax.swing.JLabel lblJugador;
     private javax.swing.JLabel lblManoActual;
     private javax.swing.JLabel lblSaldo;
     private javax.swing.JLabel lblValorPozo;
-    private javax.swing.JLabel lblValorPozo1;
     private javax.swing.JLabel lblValorPozo2;
-    private javax.swing.JList<String> listaFiguras;
-    private javax.swing.JList<String> listaJugadores;
-    private panelCartasPoker.PanelCartasPoker panelCartasPoker1;
+    private javax.swing.JList listaFiguras;
+    private javax.swing.JList listaJugadores;
+    private panelCartasPoker.PanelCartasPoker panelCartasPoker;
     private javax.swing.JPanel panelContinuar;
     private javax.swing.JTextField txtMonto;
     // End of variables declaration//GEN-END:variables
 
-    private void mostrarJugador() {
+    @Override
+    public void mostrarJugador() {
         lblJugador.setText("Jugando como: " + usuario.getNombreCompleto());
         lblSaldo.setText("Saldo: " + usuario.getSaldo());
     }
+
+    @Override
+    public void mostrarDatosMesa(ArrayList<TipoFigura> figuras) {
+        ArrayList<String> listadoFiguras = new ArrayList();
+        for (TipoFigura f : figuras) {
+            listadoFiguras.add(f.getNombre());
+        }
+        listaFiguras.setListData(listadoFiguras.toArray());
+        lblValorPozo.setText("Valor del Pozo: " + mesa.getPozo());
+        lblEstadoMano.setText("Estado de la Mano: Esperando inicio del juego. Hay "
+                + mesa.getJugadores().size() + " de " + mesa.getCantJugadores() + " jugadores.");
+
+    }
+
+    @Override
+    public void mostrarJugadores() {
+        ArrayList<String> listado = new ArrayList();
+        for (UsuarioJugador j : mesa.getJugadores()) {
+            listado.add(j.getNombreCompleto());
+        }
+        listaJugadores.setListData(listado.toArray());
+    }
+
+    @Override
+    public void iniciarPartida() {
+        controlador.pagarLuz();
+        controlador.barajarCartas();
+        controlador.repartirCartas();
+        lblValorPozo.setText("Valor del Pozo: " + mesa.getPozo());
+        lblEstadoMano.setText("Estado de la Mano: " + mesa.getManos().getLast().getEstado().toString());
+    }
+    
+    @Override
+    public void cargarCartas(){
+        try {
+            panelCartasPoker.cargarCartas(usuario.getCartas());
+        } catch (PanelCartasPokerException ex) {
+             JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+   }
 }

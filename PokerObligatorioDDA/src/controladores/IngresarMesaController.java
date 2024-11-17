@@ -21,14 +21,13 @@ import vistas.vistaIngresarMesa;
 public class IngresarMesaController implements Observador {
     
     private vistaIngresarMesa vista;
-    private UsuarioJugador resultadoJugador;
     private ArrayList<Mesa> resultadoMesas;
-    private String filtro = "";
 
     @Override
     public void actualizar(Object evento, Observable origen) {
         if (evento.equals(EventosGenerales.eventos.cambioListaMesas) ||
-                evento.equals(EventosGenerales.eventos.cambioSaldoJugador)) {
+                evento.equals(EventosGenerales.eventos.cambioSaldoJugador) ||
+                        evento.equals(EventosGenerales.eventos.cambioListaJugadores)) {
             resultadoMesas = Fachada.getInstancia().getMesas();
             vista.mostrarMesas(resultadoMesas);
             vista.mostrarJugador();
@@ -64,7 +63,7 @@ public class IngresarMesaController implements Observador {
             Mesa seleccionada = resultadoMesas.get(indice);
             try{
                 Fachada.getInstancia().ingresarMesa(usuario, seleccionada);
-                new JugarPoker(null, false,(UsuarioJugador)usuario).setVisible(true);
+                new JugarPoker(null, false,(UsuarioJugador)usuario, seleccionada).setVisible(true);
             }
             catch(PokerException ex){
                 vista.mostrarError(ex.getMessage());

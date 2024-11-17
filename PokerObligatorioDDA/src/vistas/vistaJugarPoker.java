@@ -4,10 +4,20 @@
  */
 package vistas;
 
+import java.util.ArrayList;
+import modelo.TipoFigura;
+import modelo.UsuarioJugador;
+
 /**
  *
  * @author Usuario
  */
 public interface vistaJugarPoker {
     
+    public void mostrarDatosMesa(ArrayList<TipoFigura> figuras);
+    public void mostrarJugadores();
+    public void iniciarPartida();
+    public void cargarCartas();
+
+    public void mostrarJugador();
 }

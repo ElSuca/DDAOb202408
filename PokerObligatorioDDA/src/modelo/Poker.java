@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class Poker extends Figura {
     
-    public Poker(String nombre) {
-        super(nombre);
+    public Poker(TipoFigura tipoFigura) {
+        super(tipoFigura);
     }
 
     @Override

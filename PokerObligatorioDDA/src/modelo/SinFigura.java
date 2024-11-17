@@ -7,8 +7,8 @@ package modelo;
 import java.util.ArrayList;
 
 public class SinFigura extends Figura {
-    public SinFigura(String nombre) {
-        super(nombre);
+    public SinFigura(TipoFigura tipoFigura) {
+        super(tipoFigura);
     }
 
     @Override
