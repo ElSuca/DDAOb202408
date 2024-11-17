@@ -5,23 +5,24 @@
 package modelo;
 
 import java.util.ArrayList;
+import panelCartasPoker.CartaPoker;
 
 
 public abstract class Figura {
-    private TipoFigura tipoFigura;
+    private String nombre;
 
-    public Figura(TipoFigura tipoFigura) {
-        this.tipoFigura = tipoFigura;
+    public Figura(String nombre) {
+        this.nombre = nombre;
     }
 
-    public TipoFigura getTipoFigura() {
-        return tipoFigura;
+    public String getTipoFigura() {
+        return nombre;
     }
 
-    public void setTipo(TipoFigura tipoFigura) {
-        this.tipoFigura = tipoFigura;
+    public void setTipo(String tipoFigura) {
+        this.nombre = nombre;
     }
     
-    public abstract boolean validar(ArrayList<Carta> cartas);
+    public abstract boolean validar(ArrayList<CartaPoker> cartas);
     
 }

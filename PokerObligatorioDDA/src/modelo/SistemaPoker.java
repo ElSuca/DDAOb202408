@@ -8,11 +8,12 @@ import excepciones.CrearMesaException;
 import excepciones.PokerException;
 import java.util.ArrayList;
 import java.util.Random;
+import panelCartasPoker.CartaPoker;
 
 public class SistemaPoker {
 
     ArrayList<Mesa> mesas = new ArrayList<Mesa>();
-    ArrayList<TipoFigura> figuras = new ArrayList<TipoFigura>();
+    ArrayList<Figura> figuras = new ArrayList<Figura>();
 
     public ArrayList<Mesa> getMesas() {
         return mesas;
@@ -51,7 +52,9 @@ public class SistemaPoker {
                 if (seleccionada.getJugadores().size() == seleccionada.getCantJugadores()) {
                     seleccionada.setEstado(EstadoMesa.Iniciada);
                 }
-            } else throw new PokerException("Ya ta llena");
+            } else {
+                throw new PokerException("Ya ta llena");
+            }
         } else {
             throw new PokerException("Usté' no tiene suficientes fondos");
         }
@@ -62,16 +65,16 @@ public class SistemaPoker {
         seleccionada.setEstado(EstadoMesa.Abierta);
     }
 
-    void agregarFigura(String figura) {
-        this.figuras.add(new TipoFigura(figura));
+    void agregarFigura(Figura figura) {
+        this.figuras.add(figura);
     }
 
-    ArrayList<TipoFigura> getFiguras() {
+    ArrayList<Figura> getFiguras() {
         return figuras;
     }
 
     void pagarLuz(Mesa mesa) {
-        for(UsuarioJugador j: mesa.getJugadores()){
+        for (UsuarioJugador j : mesa.getJugadores()) {
             j.setSaldo(j.getSaldo() - mesa.getLuz());
             mesa.setPozo(mesa.getPozo() + mesa.getLuz());
         }
@@ -84,12 +87,50 @@ public class SistemaPoker {
 
     void repartirCartas(Mesa mesa) {
         Random random = new Random();
-        for(UsuarioJugador j: mesa.getJugadores()){
-            for(int i = 0; i<5; i++){
+        for (UsuarioJugador j : mesa.getJugadores()) {
+            for (int i = 0; i < 5; i++) {
                 int randomIdx = random.nextInt(mesa.getMazo().getCartas().size());
                 j.getCartas().add(mesa.getMazo().getCartas().get(randomIdx));
                 mesa.getMazo().getCartas().remove(randomIdx);
             }
+        }
+    }
+
+    void iniciarMano(Mesa mesa) {
+        mesa.getManos().add(new Mano(mesa));
+        for (UsuarioJugador j : mesa.getJugadores()) {
+            j.setSituacion(SituacionJugador.AccionPendiente);
+        }
+    }
+
+    void figuraMasAlta(UsuarioJugador usuario) {
+        for (Figura figura : figuras) {
+            if (figura.validar(usuario.getCartas())) {
+                usuario.setFigura(figura);
+            }
+        }
+    }
+
+    void realizarApuesta(UsuarioJugador usuario, Mesa mesa, String monto) throws PokerException {
+        try {
+            if (mesa.getManos().getLast().getEstado() != EstadoMano.EsperandoApuesta) {
+                throw new PokerException("No se puede iniciar una apuesta");
+            } else {
+                int apuesta = Integer.parseInt(monto);
+                if (usuario.getSaldo() < apuesta) {
+                    throw new PokerException("Saldo insuficiente");
+                }
+                for (UsuarioJugador j : mesa.getJugadores()) {
+                    if (j.getSituacion() != SituacionJugador.AccionPendiente) {
+                        throw new PokerException("No se puede apostar ahora");
+                    }
+                }
+                usuario.setSaldo(usuario.getSaldo() - apuesta);
+                mesa.setPozo(mesa.getPozo() + apuesta);
+                mesa.getManos().getLast().setEstado(EstadoMano.ApuestaIniciada);
+            }
+        } catch (NumberFormatException ex) {
+            throw new PokerException("Monto inválido");
         }
     }
 

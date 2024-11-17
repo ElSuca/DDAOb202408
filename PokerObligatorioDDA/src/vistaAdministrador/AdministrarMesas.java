@@ -248,7 +248,7 @@ public class AdministrarMesas extends javax.swing.JDialog implements vistaAdmini
             listado.add("Mano N°" + m.getNumeroMano() + "Jugadores:" + m.getJugadores().size()
                     + "Total Apostado" + m.getValorMano() + "Estado:" + m.getEstado().toString()
                     + "Ganador" + m.getGanador().getNombreCompleto()
-                    + "Figura Ganadora:" + m.getFiguraGanadora().getTipoFigura().toString());
+                    + "Figura Ganadora:" + m.getFiguraGanadora().toString());
         }
         listaManos.setListData(listado.toArray());
     }

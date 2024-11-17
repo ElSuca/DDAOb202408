@@ -19,14 +19,13 @@ public class Mano {
     private ArrayList<UsuarioJugador> jugadores;
     private UsuarioJugador ganador;
 
-    public Mano(Figura figuraGanadora, EstadoMano estado, int valorMano, 
-            Mesa mesa, ArrayList<UsuarioJugador> jugadores) {
+    public Mano(Mesa mesa) {
         this.numeroMano = mesa.getManos().size()+1;
         this.figuraGanadora = null;
         this.estado = EstadoMano.EsperandoApuesta;
         this.mesa = mesa;
-        this.valorMano = mesa.getLuz();
-        this.jugadores = jugadores;
+        this.valorMano = mesa.getPozo();
+        this.jugadores = mesa.getJugadores();
         this.ganador = new UsuarioJugador("0000000-0", "----------", "Nadie", 0000);
     }
 
@@ -85,7 +84,6 @@ public class Mano {
     public void setGanador(UsuarioJugador ganador) {
         this.ganador = ganador;
     }
-
     
     
 }

@@ -5,16 +5,46 @@
 package modelo;
 
 import java.util.ArrayList;
+import panelCartasPoker.CartaPoker;
 
 public class Escalera extends Figura {
     
-    public Escalera(TipoFigura tipoFigura) {
+    public Escalera(String tipoFigura) {
         super(tipoFigura);
     }
 
     @Override
-    public boolean validar(ArrayList<Carta> cartas) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean validar(ArrayList<CartaPoker> cartas) {
+        if(estaOrdenadoAsc(cartas)) return true;
+        else if(estaOrdenadoDesc(cartas)) return true;
+        else return false;
     }
+
+    private boolean estaOrdenadoAsc(ArrayList<CartaPoker> cartas) {
+        return estaOrdenadoAscRec(cartas, 0);
+    }
+
+    private boolean estaOrdenadoAscRec(ArrayList<CartaPoker> cartas, int pos){
+        if(pos > 4) return false;
+        else if(pos == 0) return estaOrdenadoAscRec(cartas, pos+1);
+        else{
+            if(cartas.get(pos).getValorCarta() > cartas.get(pos-1).getValorCarta()) return true && estaOrdenadoAscRec(cartas, pos+1); 
+            else return false;
+        }
+    }
+    
+    private boolean estaOrdenadoDesc(ArrayList<CartaPoker> cartas) {
+        return estaOrdenadoDescRec(cartas, 0);
+    }
+
+    private boolean estaOrdenadoDescRec(ArrayList<CartaPoker> cartas, int pos) {
+        if(pos > 4) return false;
+        else if(pos == 0) return estaOrdenadoAscRec(cartas, pos+1);
+        else{
+            if(cartas.get(pos).getValorCarta() < cartas.get(pos-1).getValorCarta()) return true && estaOrdenadoAscRec(cartas, pos+1); 
+            else return false;
+        }
+    }
+    
     
 }

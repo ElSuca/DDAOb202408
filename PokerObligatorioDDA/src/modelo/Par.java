@@ -5,16 +5,26 @@
 package modelo;
 
 import java.util.ArrayList;
+import panelCartasPoker.CartaPoker;
 
 public class Par extends Figura{
     
-    public Par(TipoFigura tipoFigura) {
+    public Par(String tipoFigura) {
         super(tipoFigura);
     }
     
     @Override
-    public boolean validar(ArrayList<Carta> cartas) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean validar(ArrayList<CartaPoker> cartas) {
+        int[] contador = new int[14]; // Contadores para valores (1 al 13)
+        for (CartaPoker carta : cartas) {
+            contador[carta.getValorCarta()]++;
+        }
+        for (int c : contador) {
+            if (c == 2) {
+                return true; // Hay 4 cartas del mismo valor
+            }
+        }
+        return false;
     }
     
 }

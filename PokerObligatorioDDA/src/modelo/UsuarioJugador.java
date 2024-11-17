@@ -10,11 +10,15 @@ import panelCartasPoker.CartaPoker;
 public class UsuarioJugador extends Usuario{
     private int saldo;
     private ArrayList<CartaPoker> cartas;
+    private Figura figura;
+    private SituacionJugador situacion;
     
     public UsuarioJugador(String ci, String password, String nombreCompleto, int saldo) {
         super(ci, password, nombreCompleto);
         this.saldo = saldo;
         this.cartas = new ArrayList<CartaPoker>();
+        this.figura = null;
+        this.situacion = null;
     }
 
     public int getSaldo() {
@@ -32,5 +36,22 @@ public class UsuarioJugador extends Usuario{
     public void setCartas(ArrayList<CartaPoker> cartas){
         this.cartas = cartas;
     }
+
+    public Figura getFigura() {
+        return figura;
+    }
+
+    public void setFigura(Figura figura) {
+        this.figura = figura;
+    }
+
+    public void setSituacion(SituacionJugador situacionJugador) {
+        this.situacion = situacionJugador;
+    }
+    
+    public SituacionJugador getSituacion(){
+        return this.situacion;
+    }
+    
     
 }

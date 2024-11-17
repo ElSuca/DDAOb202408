@@ -15,6 +15,8 @@ public class EventosGenerales {
         cambioEstadoMesa,
         cambioEstadoMano,
         cambioListaJugadores,
-        cambiaronCartas
+        cambiaronCartas,
+        cambioSituacionJugador,
+        cambioPozo
     };
 }

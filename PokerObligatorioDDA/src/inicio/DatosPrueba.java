@@ -4,13 +4,20 @@
  */
 package inicio;
 
+import excepciones.CrearMesaException;
+import modelo.Escalera;
 import modelo.Fachada;
+import modelo.Par;
+import modelo.Pierna;
+import modelo.Poker;
+import modelo.SinFigura;
 
 /**
  *
  * @author Usuario
  */
 public class DatosPrueba {
+
     /*
         Administradores:
             Cédula: “100” - Password: “100” - Nombre Completo: “A 100”
@@ -34,8 +41,8 @@ public class DatosPrueba {
             ● Pierna: Tres cartas de igual valor sin importar el palo.
             ● Par: Dos cartas de igual valor sin importar el palo.
             ● Sin figura: Las cartas no cumplen ninguno de los juegos anteriores
-    */
-    public static void cargar(){
+     */
+    public static void cargar() {
         Fachada fachada = Fachada.getInstancia();
 
         fachada.agregarAdministrador("100", "100", "A 100");
@@ -53,11 +60,17 @@ public class DatosPrueba {
         fachada.agregarJugador("9", "9", "J9", 9000);
         fachada.agregarJugador("10", "10", "El Tuki", 27478);
         fachada.agregarJugador("11", "11", "El Tiki", 99999);
-        
-        fachada.agregarFigura("Poker");
-        fachada.agregarFigura("Escalera");
-        fachada.agregarFigura("Pierna");
-        fachada.agregarFigura("Par");
-        fachada.agregarFigura("SinFigura");
+        try {
+            fachada.agregarMesa("2", "5", "10");
+        } catch (CrearMesaException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        fachada.agregarFigura(new SinFigura("Sin Figura"));
+        fachada.agregarFigura(new Par("Par"));
+        fachada.agregarFigura(new Pierna("Pierna"));
+        fachada.agregarFigura(new Escalera("Escalera"));
+        fachada.agregarFigura(new Poker("Poker"));
+
     }
 }

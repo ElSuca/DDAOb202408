@@ -5,14 +5,15 @@
 package modelo;
 
 import java.util.ArrayList;
+import panelCartasPoker.CartaPoker;
 
 public class SinFigura extends Figura {
-    public SinFigura(TipoFigura tipoFigura) {
+    public SinFigura(String tipoFigura) {
         super(tipoFigura);
     }
 
     @Override
-    public boolean validar(ArrayList<Carta> cartas) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean validar(ArrayList<CartaPoker> cartas) {
+        return true;
     }
 }

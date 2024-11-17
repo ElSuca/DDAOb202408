@@ -20,16 +20,16 @@ public class Mazo {
     }
     
     public void agregarCartas(){
-        for(int i = 0; i <= 13; i++){
+        for(int i = 1; i <= 13; i++){
             this.cartas.add(new Carta(i, CartaPoker.CORAZON));
         }
-        for(int i = 0; i <= 13; i++){
+        for(int i = 1; i <= 13; i++){
             this.cartas.add(new Carta(i, CartaPoker.DIAMANTE));
         }
-        for(int i = 0; i <= 13; i++){
+        for(int i = 1; i <= 13; i++){
             this.cartas.add(new Carta(i, CartaPoker.TREBOL));
         }
-        for(int i = 0; i <= 13; i++){
+        for(int i = 1; i <= 13; i++){
             this.cartas.add(new Carta(i, CartaPoker.PIQUE));
         }
     }

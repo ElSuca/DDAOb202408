@@ -4,12 +4,13 @@
  */
 package controladores;
 
+import excepciones.PokerException;
 import java.util.ArrayList;
 import modelo.EstadoMesa;
 import modelo.EventosGenerales;
 import modelo.Fachada;
+import modelo.Figura;
 import modelo.Mesa;
-import modelo.TipoFigura;
 import modelo.UsuarioJugador;
 import observador.Observable;
 import observador.Observador;
@@ -23,9 +24,9 @@ import vistas.vistaJugarPoker;
 public class PokerController implements Observador {
 
     private vistaJugarPoker vista;
-    private ArrayList<TipoFigura> figuras;
+    private ArrayList<Figura> figuras;
     private Mesa mesa;
-    
+
     public PokerController(JugarPoker vista, Mesa m) {
         Fachada.getInstancia().agregarObservador(this);
         this.vista = vista;
@@ -35,32 +36,38 @@ public class PokerController implements Observador {
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        if(evento.equals(EventosGenerales.eventos.cambioListaJugadores)){
+        if (evento.equals(EventosGenerales.eventos.cambioListaJugadores)) {
             vista.mostrarJugadores();
-        }
-        else if(evento.equals(EventosGenerales.eventos.cambioEstadoMesa)){
-            if(mesa.getEstado() == EstadoMesa.Abierta){
-                vista.mostrarDatosMesa(figuras);
+        } else if (evento.equals(EventosGenerales.eventos.cambioEstadoMesa)) {
+            if (mesa.getEstado() == EstadoMesa.Abierta) {
+                vista.mostrarDatosMesaAbierta(figuras);
+            } else if (mesa.getEstado() == EstadoMesa.Iniciada) {
+                vista.iniciarPartida(figuras);
             }
-            else if(mesa.getEstado() == EstadoMesa.Iniciada){
-                vista.iniciarPartida();
-            }
-        }
-        else if(evento.equals(EventosGenerales.eventos.cambioSaldoJugador)){
+        } else if (evento.equals(EventosGenerales.eventos.cambioPozo)) {
+            vista.actualizarPozo(mesa.getPozo());
+        } else if (evento.equals(EventosGenerales.eventos.cambioSaldoJugador)) {
             vista.mostrarJugador();
-        }
-        else if(evento.equals(EventosGenerales.eventos.cambiaronCartas)){
+        } else if (evento.equals(EventosGenerales.eventos.cambiaronCartas)) {
             vista.cargarCartas();
+        } else if (evento.equals(EventosGenerales.eventos.cambioSituacionJugador)) {
+            vista.mostrarDatosMesa(figuras);
         }
-        
+
     }
 
     private void inicializarVista() {
         figuras = Fachada.getInstancia().getFiguras();
-        vista.mostrarDatosMesa(figuras);
+        if (mesa.getEstado() == EstadoMesa.Abierta) {
+            vista.mostrarDatosMesaAbierta(figuras);
+        } else if (mesa.getEstado() == EstadoMesa.Iniciada) {
+
+            vista.mostrarDatosMesa(figuras);
+        }
+
     }
-    
-    public void salirMesa(UsuarioJugador usuario){
+
+    public void salirMesa(UsuarioJugador usuario) {
         Fachada.getInstancia().salirMesa(usuario, mesa);
     }
 
@@ -75,5 +82,21 @@ public class PokerController implements Observador {
     public void repartirCartas() {
         Fachada.getInstancia().repartirCartas(mesa);
     }
-    
+
+    public void iniciarMano() {
+        Fachada.getInstancia().iniciarMano(mesa);
+    }
+
+    public void figuraMasAlta(UsuarioJugador usuario) {
+        Fachada.getInstancia().figuraMasAlta(usuario);
+    }
+
+    public void realizarApuesta(UsuarioJugador usuario, String monto) {
+        try {
+            Fachada.getInstancia().realizarApuesta(usuario, mesa, monto);
+        } catch (PokerException ex) {
+            vista.mostrarError(ex.getMessage());
+        }
+    }
+
 }

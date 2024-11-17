@@ -69,15 +69,15 @@ public class Fachada extends Observable {
         sAcceso.logout(s);
     }
 
-    public void agregarFigura(String figura) {
+    public void agregarFigura(Figura figura) {
         sPoker.agregarFigura(figura);
     }
 
-    public ArrayList<TipoFigura> getFiguras() {
+    public ArrayList<Figura> getFiguras() {
         return sPoker.getFiguras();
     }
-    
-    public void salirMesa(UsuarioJugador usuario, Mesa seleccionada){
+
+    public void salirMesa(UsuarioJugador usuario, Mesa seleccionada) {
         sPoker.salirMesa(usuario, seleccionada);
         avisar(eventos.cambioListaJugadores);
         avisar(eventos.cambioEstadoMesa);
@@ -95,5 +95,23 @@ public class Fachada extends Observable {
     public void repartirCartas(Mesa mesa) {
         sPoker.repartirCartas(mesa);
         avisar(eventos.cambiaronCartas);
+    }
+
+    public void iniciarMano(Mesa mesa) {
+        sPoker.iniciarMano(mesa);
+        avisar(eventos.cambioEstadoMano);
+    }
+
+    public void figuraMasAlta(UsuarioJugador usuario) {
+        sPoker.figuraMasAlta(usuario);
+    }
+
+    public void realizarApuesta(UsuarioJugador usuario, Mesa mesa, String monto) throws PokerException {
+        sPoker.realizarApuesta(usuario, mesa, monto);
+        avisar(eventos.cambioPozo);
+        avisar(eventos.cambioEstadoMano);
+        avisar(eventos.cambioSaldoJugador);
+        avisar(eventos.cambioSituacionJugador);
+
     }
 }

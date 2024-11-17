@@ -5,7 +5,7 @@
 package vistas;
 
 import java.util.ArrayList;
-import modelo.TipoFigura;
+import modelo.Figura;
 import modelo.UsuarioJugador;
 
 /**
@@ -14,10 +14,14 @@ import modelo.UsuarioJugador;
  */
 public interface vistaJugarPoker {
     
-    public void mostrarDatosMesa(ArrayList<TipoFigura> figuras);
+    public void mostrarDatosMesaAbierta(ArrayList<Figura> figuras);
     public void mostrarJugadores();
-    public void iniciarPartida();
+    public void iniciarPartida(ArrayList<Figura> figuras);
     public void cargarCartas();
-
+    public void mostrarDatosMesa(ArrayList<Figura> figuras);
     public void mostrarJugador();
+
+    public void mostrarError(String message);
+
+    public void actualizarPozo(int pozo);
 }
