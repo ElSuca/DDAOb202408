@@ -46,6 +46,13 @@ public class SistemaPoker {
     }
 
     void ingresarMesa(UsuarioJugador usuario, Mesa seleccionada) throws PokerException {
+
+        for(Mesa m: mesas){
+            for(UsuarioJugador j: m.getJugadores()){
+                int idxJ = m.getJugadores().indexOf(j);
+                if(m.getJugadores().get(idxJ) == usuario) throw new PokerException("Ya estás en una partida");
+            }
+        }
         if (seleccionada.getLuz() * 10 < usuario.getSaldo()) {
             if (seleccionada.getCantJugadores() > seleccionada.getJugadores().size()) {
                 seleccionada.getJugadores().add(usuario);
@@ -58,6 +65,7 @@ public class SistemaPoker {
         } else {
             throw new PokerException("Usté' no tiene suficientes fondos");
         }
+
     }
 
     void salirMesa(UsuarioJugador usuario, Mesa seleccionada) {
@@ -135,68 +143,64 @@ public class SistemaPoker {
     }
 
     void noRealizarApuesta(UsuarioJugador usuario, Mesa mesa, String pozo) throws PokerException {
-        try {
-            if (mesa.getManos().getLast().getEstado() != EstadoMano.EsperandoApuesta) {
-                throw new PokerException("No es posible indicar que no deseas iniciar una apuesta en este momento.");
-            } else {
-                int pozoAntiguo = Integer.parseInt(pozo);
-                boolean noInicianApuesta = false;
-                for (UsuarioJugador j : mesa.getJugadores()) {
-                    if (j.getSituacion() == SituacionJugador.NoIniciaApuesta) {
-                        noInicianApuesta = true;
-                    }
-                }
-                if (noInicianApuesta) {
-                    mesa.getManos().getLast().setEstado(EstadoMano.Terminada);
-                    mesa.setPozo(mesa.getPozo() + pozoAntiguo);
+
+        if (mesa.getManos().getLast().getEstado() != EstadoMano.EsperandoApuesta) {
+            throw new PokerException("No es posible indicar que no deseas iniciar una apuesta en este momento.");
+        } else {
+            int pozoAntiguo = Integer.parseInt(pozo);
+            boolean noInicianApuesta = false;
+            for (UsuarioJugador j : mesa.getJugadores()) {
+                if (j.getSituacion() == SituacionJugador.NoIniciaApuesta) {
+                    noInicianApuesta = true;
                 }
             }
-        } catch (PokerException ex) {
-            throw new PokerException("No se que poner acá jeje");
+            if (noInicianApuesta) {
+                mesa.getManos().getLast().setEstado(EstadoMano.Terminada);
+                mesa.setPozo(mesa.getPozo() + pozoAntiguo);
+            }
         }
+
     }
 
     void pagarApuesta(UsuarioJugador usuario, String monto, Mesa mesa) throws PokerException {
-        try {
-            if (mesa.getManos().getLast().getEstado() != EstadoMano.ApuestaIniciada) {
-                throw new PokerException("No es posible pagar una apuesta en este momento");
-            } else {
-                int apuesta = Integer.parseInt(monto);
-                if (usuario.getSituacion() == SituacionJugador.DeseaPagar) {
-                    throw new PokerException("Ya pagaste esta apuesta");
-                } else {
-                    if (usuario.getSituacion() == SituacionJugador.ApuestaIniciada) {
-                        throw new PokerException("Tu iniciaste esta apuesta");
-                    }
-                }
-                usuario.setSaldo(usuario.getSaldo() - apuesta);
-                mesa.setPozo(mesa.getPozo() + apuesta);
-            }
-        } catch (PokerException ex) {
-            throw new PokerException("sss");
-        }
-    }
 
-    void pasarApuesta(UsuarioJugador usuario, Mesa mesa) throws PokerException {
-        try {
-            if (mesa.getManos().getLast().getEstado() != EstadoMano.ApuestaIniciada) {
-                throw new PokerException("No es posible pasar en este momento");
+        if (mesa.getManos().getLast().getEstado() != EstadoMano.ApuestaIniciada) {
+            throw new PokerException("No es posible pagar una apuesta en este momento");
+        } else {
+            int apuesta = Integer.parseInt(monto);
+            if (usuario.getSituacion() == SituacionJugador.DeseaPagar) {
+                throw new PokerException("Ya pagaste esta apuesta");
             } else {
-                if (usuario.getSituacion() == SituacionJugador.DeseaPasar) {
-                    throw new PokerException("Ya Pasaste");
-                }
                 if (usuario.getSituacion() == SituacionJugador.ApuestaIniciada) {
                     throw new PokerException("Tu iniciaste esta apuesta");
                 }
             }
-            usuario.setSituacion(SituacionJugador.AfueraDeMano);
-            boolean pagan = false;
-            for(UsuarioJugador j: mesa.getJugadores()){
-                if(j.getSituacion() == SituacionJugador.NoPagaApuesta) pagan = true;
+            usuario.setSaldo(usuario.getSaldo() - apuesta);
+            mesa.setPozo(mesa.getPozo() + apuesta);
+        }
+
+    }
+
+    void pasarApuesta(UsuarioJugador usuario, Mesa mesa) throws PokerException {
+        if (mesa.getManos().getLast().getEstado() != EstadoMano.ApuestaIniciada) {
+            throw new PokerException("No es posible pasar en este momento");
+        } else {
+            if (usuario.getSituacion() == SituacionJugador.DeseaPasar) {
+                throw new PokerException("Ya Pasaste");
             }
-            if(pagan) mesa.getManos().getLast().setEstado(EstadoMano.Terminada);
-        } catch (PokerException ex) {
-            throw new PokerException("sss");
+            if (usuario.getSituacion() == SituacionJugador.ApuestaIniciada) {
+                throw new PokerException("Tu iniciaste esta apuesta");
+            }
+        }
+        usuario.setSituacion(SituacionJugador.AfueraDeMano);
+        boolean pagan = false;
+        for (UsuarioJugador j : mesa.getJugadores()) {
+            if (j.getSituacion() == SituacionJugador.NoPagaApuesta) {
+                pagan = true;
+            }
+        }
+        if (pagan) {
+            mesa.getManos().getLast().setEstado(EstadoMano.Terminada);
         }
     }
 }

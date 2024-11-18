@@ -132,7 +132,7 @@ public class Fachada extends Observable {
 
     public void pasarApuesta(UsuarioJugador usuario, Mesa mesa) throws PokerException {
         sPoker.pasarApuesta(usuario, mesa);
-        avisar(eventos.cambioEstadoMesa);
+        avisar(eventos.cambioEstadoMano);
         avisar(eventos.cambioSituacionJugador);
     }
 }

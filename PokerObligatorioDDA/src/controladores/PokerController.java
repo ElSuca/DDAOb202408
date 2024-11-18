@@ -6,6 +6,7 @@ package controladores;
 
 import excepciones.PokerException;
 import java.util.ArrayList;
+import modelo.EstadoMano;
 import modelo.EstadoMesa;
 import modelo.EventosGenerales;
 import modelo.Fachada;
@@ -52,6 +53,14 @@ public class PokerController implements Observador {
             vista.cargarCartas();
         } else if (evento.equals(EventosGenerales.eventos.cambioSituacionJugador)) {
             vista.mostrarDatosMesa(figuras);
+        } else if (evento.equals(EventosGenerales.eventos.cambioEstadoMano)){
+            if(mesa.getManos().getLast().getEstado() == EstadoMano.ApuestaIniciada){
+                vista.mostrarJugadores();
+                vista.actualizarPozo(mesa.getPozo());
+            }
+//            else if(mesa.getManos().getLast().getEstado() == EstadoMano.PidiendoCartas){
+//                vista.mostrar
+//            }
         }
 
     }
