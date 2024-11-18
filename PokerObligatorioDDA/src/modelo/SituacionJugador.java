@@ -6,7 +6,10 @@ package modelo;
 public enum SituacionJugador {
     AccionPendiente,
     ApuestaIniciada,
-    ApuestaApagada,
+    ApuestaPagada,
     NoPagaApuesta,
-    NoIniciaApuesta
+    NoIniciaApuesta,
+    DeseaPasar,
+    DeseaPagar,
+    AfueraDeMano
 }

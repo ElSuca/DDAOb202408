@@ -99,4 +99,28 @@ public class PokerController implements Observador {
         }
     }
 
+    public void noRealizarApuesta(UsuarioJugador usuario, String pozo) {
+        try {
+            Fachada.getInstancia().noRealizarApuesta(usuario, mesa, pozo);
+        } catch (PokerException ex) {
+            vista.mostrarError(ex.getMessage());
+        }
+    }
+
+    public void pagarApuesta(UsuarioJugador usuario, String monto) {
+        try {
+            Fachada.getInstancia().pagarApuesta(usuario, monto, mesa);
+        } catch (PokerException ex) {
+            vista.mostrarError(ex.getMessage());
+        }
+    }
+
+    public void pasarApuesta(UsuarioJugador usuario) {
+        try {
+            Fachada.getInstancia().pasarApuesta(usuario, mesa);
+        } catch (PokerException ex) {
+            vista.mostrarError(ex.getMessage());
+        }
+    }
+
 }

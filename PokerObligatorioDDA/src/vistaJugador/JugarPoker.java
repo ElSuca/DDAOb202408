@@ -308,6 +308,8 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
 
     private void btnNoApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNoApostarActionPerformed
         // TODO add your handling code here:
+        String pozo = lblPozo.getText();
+        controlador.noRealizarApuesta(usuario, pozo);
     }//GEN-LAST:event_btnNoApostarActionPerformed
 
     private void btnApostarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApostarActionPerformed
@@ -317,10 +319,13 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
         // TODO add your handling code here:
+        String monto = txtMonto.getText();
+        controlador.pagarApuesta(usuario, monto);
     }//GEN-LAST:event_btnPagarActionPerformed
 
     private void btnPasarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPasarActionPerformed
         // TODO add your handling code here:
+        controlador.pasarApuesta(usuario);
     }//GEN-LAST:event_btnPasarActionPerformed
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed

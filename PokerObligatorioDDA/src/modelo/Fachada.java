@@ -114,4 +114,25 @@ public class Fachada extends Observable {
         avisar(eventos.cambioSituacionJugador);
 
     }
+
+    public void noRealizarApuesta(UsuarioJugador usuario, Mesa mesa, String pozo) throws PokerException {
+        sPoker.noRealizarApuesta(usuario, mesa, pozo);
+        avisar(eventos.cambioPozo);
+        avisar(eventos.cambioEstadoMano);
+        avisar(eventos.cambioSituacionJugador);
+    }
+
+    public void pagarApuesta(UsuarioJugador usuario, String monto, Mesa mesa) throws PokerException {
+        sPoker.pagarApuesta(usuario, monto, mesa);
+        avisar(eventos.cambioPozo);
+        avisar(eventos.cambioEstadoMano);
+        avisar(eventos.cambioSaldoJugador);
+        avisar(eventos.cambioSituacionJugador);
+    }
+
+    public void pasarApuesta(UsuarioJugador usuario, Mesa mesa) throws PokerException {
+        sPoker.pasarApuesta(usuario, mesa);
+        avisar(eventos.cambioEstadoMesa);
+        avisar(eventos.cambioSituacionJugador);
+    }
 }
