@@ -20,6 +20,14 @@ public class UsuarioJugador extends Usuario{
         this.figura = null;
         this.situacion = null;
     }
+    
+     public UsuarioJugador(String ci, String password, String nombreCompleto, int saldo, Figura figura,  ArrayList<CartaPoker> cartas) {
+        super(ci, password, nombreCompleto);
+        this.saldo = saldo;
+        this.cartas = cartas;
+        this.figura = figura;
+        this.situacion = null;
+    }
 
     public int getSaldo() {
         return saldo;
@@ -51,6 +59,16 @@ public class UsuarioJugador extends Usuario{
     
     public SituacionJugador getSituacion(){
         return this.situacion;
+    }
+
+    public int getCartaMasAlta() {
+        int cartaAlta = 0;
+        for (CartaPoker carta : cartas) {
+            if (carta.getValorCarta() > cartaAlta && cartaAlta != 1) {
+                cartaAlta = carta.getValorCarta();
+            }
+        }
+        return cartaAlta;
     }
     
     

@@ -10,7 +10,7 @@ import panelCartasPoker.CartaPoker;
 public class Par extends Figura{
     
     public Par(String tipoFigura) {
-        super(tipoFigura);
+        super(tipoFigura,2);
     }
     
     @Override

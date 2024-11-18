@@ -8,8 +8,4 @@ public enum SituacionJugador {
     ApuestaIniciada,
     ApuestaPagada,
     NoPagaApuesta,
-    NoIniciaApuesta,
-    DeseaPasar,
-    DeseaPagar,
-    AfueraDeMano
 }

@@ -6,6 +6,8 @@ package controladores;
 
 import excepciones.PokerException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.EstadoMano;
 import modelo.EstadoMesa;
 import modelo.EventosGenerales;
@@ -29,7 +31,7 @@ public class PokerController implements Observador {
     private Mesa mesa;
 
     public PokerController(JugarPoker vista, Mesa m) {
-        Fachada.getInstancia().agregarObservador(this);
+        m.agregarObservador(this);
         this.vista = vista;
         this.mesa = m;
         inicializarVista();
@@ -43,7 +45,7 @@ public class PokerController implements Observador {
             if (mesa.getEstado() == EstadoMesa.Abierta) {
                 vista.mostrarDatosMesaAbierta(figuras);
             } else if (mesa.getEstado() == EstadoMesa.Iniciada) {
-                vista.iniciarPartida(figuras);
+                iniciarPartida();
             }
         } else if (evento.equals(EventosGenerales.eventos.cambioPozo)) {
             vista.actualizarPozo(mesa.getPozo());
@@ -58,9 +60,10 @@ public class PokerController implements Observador {
                 vista.mostrarJugadores();
                 vista.actualizarPozo(mesa.getPozo());
             }
-//            else if(mesa.getManos().getLast().getEstado() == EstadoMano.PidiendoCartas){
-//                vista.mostrar
-//            }
+            if(mesa.getManos().getLast().getEstado() == EstadoMano.Terminada){
+                determinarGanador();
+                vista.mostrarDatosMesa(figuras);
+            }
         }
 
     }
@@ -70,30 +73,39 @@ public class PokerController implements Observador {
         if (mesa.getEstado() == EstadoMesa.Abierta) {
             vista.mostrarDatosMesaAbierta(figuras);
         } else if (mesa.getEstado() == EstadoMesa.Iniciada) {
-
             vista.mostrarDatosMesa(figuras);
         }
+        
 
     }
 
+    void iniciarPartida(){
+        pagarLuz();
+        barajarCartas();
+        repartirCartas();
+        iniciarMano();
+        vista.mostrarDatosMesa(figuras);
+    }
+    
     public void salirMesa(UsuarioJugador usuario) {
-        Fachada.getInstancia().salirMesa(usuario, mesa);
+        mesa.salirMesa(usuario);
+        Fachada.getInstancia().salirMesa();
     }
 
     public void pagarLuz() {
-        Fachada.getInstancia().pagarLuz(mesa);
+        mesa.pagarLuz();
     }
 
     public void barajarCartas() {
-        Fachada.getInstancia().barajarCartas(mesa);
+        mesa.barajarCartas();
     }
 
     public void repartirCartas() {
-        Fachada.getInstancia().repartirCartas(mesa);
+        mesa.repartirCartas();
     }
 
     public void iniciarMano() {
-        Fachada.getInstancia().iniciarMano(mesa);
+        mesa.iniciarMano();
     }
 
     public void figuraMasAlta(UsuarioJugador usuario) {
@@ -102,7 +114,7 @@ public class PokerController implements Observador {
 
     public void realizarApuesta(UsuarioJugador usuario, String monto) {
         try {
-            Fachada.getInstancia().realizarApuesta(usuario, mesa, monto);
+            mesa.realizarApuesta(usuario, monto);
         } catch (PokerException ex) {
             vista.mostrarError(ex.getMessage());
         }
@@ -110,7 +122,7 @@ public class PokerController implements Observador {
 
     public void noRealizarApuesta(UsuarioJugador usuario, String pozo) {
         try {
-            Fachada.getInstancia().noRealizarApuesta(usuario, mesa, pozo);
+            mesa.noRealizarApuesta(usuario, pozo);
         } catch (PokerException ex) {
             vista.mostrarError(ex.getMessage());
         }
@@ -118,7 +130,7 @@ public class PokerController implements Observador {
 
     public void pagarApuesta(UsuarioJugador usuario, String monto) {
         try {
-            Fachada.getInstancia().pagarApuesta(usuario, monto, mesa);
+            mesa.pagarApuesta(usuario, monto);
         } catch (PokerException ex) {
             vista.mostrarError(ex.getMessage());
         }
@@ -126,10 +138,24 @@ public class PokerController implements Observador {
 
     public void pasarApuesta(UsuarioJugador usuario) {
         try {
-            Fachada.getInstancia().pasarApuesta(usuario, mesa);
+            mesa.pasarApuesta(usuario);
         } catch (PokerException ex) {
             vista.mostrarError(ex.getMessage());
         }
     }
 
+    public void pedirCartas(UsuarioJugador usuario) {
+        try {
+            mesa.pedirCartas(usuario);
+        } catch (PokerException ex) {
+            vista.mostrarError(ex.getMessage());
+        }
+    }
+
+    private void determinarGanador() {
+        mesa.determinarGanador();
+    }
+
+    
+    
 }

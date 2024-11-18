@@ -25,7 +25,7 @@ public class Mano {
         this.estado = EstadoMano.EsperandoApuesta;
         this.mesa = mesa;
         this.valorMano = mesa.getPozo();
-        this.jugadores = mesa.getJugadores();
+        this.jugadores = new ArrayList<UsuarioJugador>();
         this.ganador = new UsuarioJugador("0000000-0", "----------", "Nadie", 0000);
     }
 

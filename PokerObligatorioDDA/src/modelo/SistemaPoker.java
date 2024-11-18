@@ -45,70 +45,25 @@ public class SistemaPoker {
         }
     }
 
-    void ingresarMesa(UsuarioJugador usuario, Mesa seleccionada) throws PokerException {
+    void ingresarMesa(UsuarioJugador usuario) throws PokerException {
 
-        for(Mesa m: mesas){
-            for(UsuarioJugador j: m.getJugadores()){
+        for (Mesa m : mesas) {
+            for (UsuarioJugador j : m.getJugadores()) {
                 int idxJ = m.getJugadores().indexOf(j);
-                if(m.getJugadores().get(idxJ) == usuario) throw new PokerException("Ya estás en una partida");
-            }
-        }
-        if (seleccionada.getLuz() * 10 < usuario.getSaldo()) {
-            if (seleccionada.getCantJugadores() > seleccionada.getJugadores().size()) {
-                seleccionada.getJugadores().add(usuario);
-                if (seleccionada.getJugadores().size() == seleccionada.getCantJugadores()) {
-                    seleccionada.setEstado(EstadoMesa.Iniciada);
+                if (m.getJugadores().get(idxJ) == usuario) {
+                    throw new PokerException("Ya estás en una partida");
                 }
-            } else {
-                throw new PokerException("Ya ta llena");
             }
-        } else {
-            throw new PokerException("Usté' no tiene suficientes fondos");
         }
-
     }
 
-    void salirMesa(UsuarioJugador usuario, Mesa seleccionada) {
-        seleccionada.getJugadores().remove(usuario);
-        seleccionada.setEstado(EstadoMesa.Abierta);
-    }
-
+    
     void agregarFigura(Figura figura) {
         this.figuras.add(figura);
     }
 
     ArrayList<Figura> getFiguras() {
         return figuras;
-    }
-
-    void pagarLuz(Mesa mesa) {
-        for (UsuarioJugador j : mesa.getJugadores()) {
-            j.setSaldo(j.getSaldo() - mesa.getLuz());
-            mesa.setPozo(mesa.getPozo() + mesa.getLuz());
-        }
-    }
-
-    void barajarCartas(Mesa mesa) {
-        mesa.setMazo(new Mazo());
-        mesa.getMazo().barajar();
-    }
-
-    void repartirCartas(Mesa mesa) {
-        Random random = new Random();
-        for (UsuarioJugador j : mesa.getJugadores()) {
-            for (int i = 0; i < 5; i++) {
-                int randomIdx = random.nextInt(mesa.getMazo().getCartas().size());
-                j.getCartas().add(mesa.getMazo().getCartas().get(randomIdx));
-                mesa.getMazo().getCartas().remove(randomIdx);
-            }
-        }
-    }
-
-    void iniciarMano(Mesa mesa) {
-        mesa.getManos().add(new Mano(mesa));
-        for (UsuarioJugador j : mesa.getJugadores()) {
-            j.setSituacion(SituacionJugador.AccionPendiente);
-        }
     }
 
     void figuraMasAlta(UsuarioJugador usuario) {
@@ -118,89 +73,5 @@ public class SistemaPoker {
             }
         }
     }
-
-    void realizarApuesta(UsuarioJugador usuario, Mesa mesa, String monto) throws PokerException {
-        try {
-            if (mesa.getManos().getLast().getEstado() != EstadoMano.EsperandoApuesta) {
-                throw new PokerException("No se puede iniciar una apuesta");
-            } else {
-                int apuesta = Integer.parseInt(monto);
-                if (usuario.getSaldo() < apuesta) {
-                    throw new PokerException("Saldo insuficiente");
-                }
-                for (UsuarioJugador j : mesa.getJugadores()) {
-                    if (j.getSituacion() != SituacionJugador.AccionPendiente) {
-                        throw new PokerException("No se puede apostar ahora");
-                    }
-                }
-                usuario.setSaldo(usuario.getSaldo() - apuesta);
-                mesa.setPozo(mesa.getPozo() + apuesta);
-                mesa.getManos().getLast().setEstado(EstadoMano.ApuestaIniciada);
-            }
-        } catch (NumberFormatException ex) {
-            throw new PokerException("Monto inválido");
-        }
-    }
-
-    void noRealizarApuesta(UsuarioJugador usuario, Mesa mesa, String pozo) throws PokerException {
-
-        if (mesa.getManos().getLast().getEstado() != EstadoMano.EsperandoApuesta) {
-            throw new PokerException("No es posible indicar que no deseas iniciar una apuesta en este momento.");
-        } else {
-            int pozoAntiguo = Integer.parseInt(pozo);
-            boolean noInicianApuesta = false;
-            for (UsuarioJugador j : mesa.getJugadores()) {
-                if (j.getSituacion() == SituacionJugador.NoIniciaApuesta) {
-                    noInicianApuesta = true;
-                }
-            }
-            if (noInicianApuesta) {
-                mesa.getManos().getLast().setEstado(EstadoMano.Terminada);
-                mesa.setPozo(mesa.getPozo() + pozoAntiguo);
-            }
-        }
-
-    }
-
-    void pagarApuesta(UsuarioJugador usuario, String monto, Mesa mesa) throws PokerException {
-
-        if (mesa.getManos().getLast().getEstado() != EstadoMano.ApuestaIniciada) {
-            throw new PokerException("No es posible pagar una apuesta en este momento");
-        } else {
-            int apuesta = Integer.parseInt(monto);
-            if (usuario.getSituacion() == SituacionJugador.DeseaPagar) {
-                throw new PokerException("Ya pagaste esta apuesta");
-            } else {
-                if (usuario.getSituacion() == SituacionJugador.ApuestaIniciada) {
-                    throw new PokerException("Tu iniciaste esta apuesta");
-                }
-            }
-            usuario.setSaldo(usuario.getSaldo() - apuesta);
-            mesa.setPozo(mesa.getPozo() + apuesta);
-        }
-
-    }
-
-    void pasarApuesta(UsuarioJugador usuario, Mesa mesa) throws PokerException {
-        if (mesa.getManos().getLast().getEstado() != EstadoMano.ApuestaIniciada) {
-            throw new PokerException("No es posible pasar en este momento");
-        } else {
-            if (usuario.getSituacion() == SituacionJugador.DeseaPasar) {
-                throw new PokerException("Ya Pasaste");
-            }
-            if (usuario.getSituacion() == SituacionJugador.ApuestaIniciada) {
-                throw new PokerException("Tu iniciaste esta apuesta");
-            }
-        }
-        usuario.setSituacion(SituacionJugador.AfueraDeMano);
-        boolean pagan = false;
-        for (UsuarioJugador j : mesa.getJugadores()) {
-            if (j.getSituacion() == SituacionJugador.NoPagaApuesta) {
-                pagan = true;
-            }
-        }
-        if (pagan) {
-            mesa.getManos().getLast().setEstado(EstadoMano.Terminada);
-        }
-    }
+   
 }

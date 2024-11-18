@@ -16,7 +16,6 @@ public interface vistaJugarPoker {
     
     public void mostrarDatosMesaAbierta(ArrayList<Figura> figuras);
     public void mostrarJugadores();
-    public void iniciarPartida(ArrayList<Figura> figuras);
     public void cargarCartas();
     public void mostrarDatosMesa(ArrayList<Figura> figuras);
     public void mostrarJugador();

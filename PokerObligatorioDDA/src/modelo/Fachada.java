@@ -57,14 +57,8 @@ public class Fachada extends Observable {
     public void agregarMesa(String jugadores, String luz, String comision) throws CrearMesaException {
         sPoker.agregarMesa(jugadores, luz, comision);
         avisar(eventos.cambioListaMesas);
-    }
-
-    public void ingresarMesa(UsuarioJugador usuario, Mesa seleccionada) throws PokerException {
-        sPoker.ingresarMesa(usuario, seleccionada);
-        avisar(eventos.cambioEstadoMesa);
-        avisar(eventos.cambioListaJugadores);
-    }
-
+    } 
+    
     public void logout(Sesion s) {
         sAcceso.logout(s);
     }
@@ -77,62 +71,19 @@ public class Fachada extends Observable {
         return sPoker.getFiguras();
     }
 
-    public void salirMesa(UsuarioJugador usuario, Mesa seleccionada) {
-        sPoker.salirMesa(usuario, seleccionada);
-        avisar(eventos.cambioListaJugadores);
-        avisar(eventos.cambioEstadoMesa);
-    }
-
-    public void pagarLuz(Mesa mesa) {
-        sPoker.pagarLuz(mesa);
-        avisar(eventos.cambioSaldoJugador);
-    }
-
-    public void barajarCartas(Mesa mesa) {
-        sPoker.barajarCartas(mesa);
-    }
-
-    public void repartirCartas(Mesa mesa) {
-        sPoker.repartirCartas(mesa);
-        avisar(eventos.cambiaronCartas);
-    }
-
-    public void iniciarMano(Mesa mesa) {
-        sPoker.iniciarMano(mesa);
-        avisar(eventos.cambioEstadoMano);
-    }
-
     public void figuraMasAlta(UsuarioJugador usuario) {
         sPoker.figuraMasAlta(usuario);
     }
 
-    public void realizarApuesta(UsuarioJugador usuario, Mesa mesa, String monto) throws PokerException {
-        sPoker.realizarApuesta(usuario, mesa, monto);
-        avisar(eventos.cambioPozo);
-        avisar(eventos.cambioEstadoMano);
-        avisar(eventos.cambioSaldoJugador);
-        avisar(eventos.cambioSituacionJugador);
-
+    public void verificarMesa(UsuarioJugador usuario) throws PokerException{
+        sPoker.ingresarMesa(usuario);
+        avisar(eventos.cambioListaJugadores);
+        avisar(eventos.cambioEstadoMesa);
+    }
+    
+    public void salirMesa(){
+        avisar(eventos.cambioEstadoMesa);
+        avisar(eventos.cambioListaJugadores);
     }
 
-    public void noRealizarApuesta(UsuarioJugador usuario, Mesa mesa, String pozo) throws PokerException {
-        sPoker.noRealizarApuesta(usuario, mesa, pozo);
-        avisar(eventos.cambioPozo);
-        avisar(eventos.cambioEstadoMano);
-        avisar(eventos.cambioSituacionJugador);
-    }
-
-    public void pagarApuesta(UsuarioJugador usuario, String monto, Mesa mesa) throws PokerException {
-        sPoker.pagarApuesta(usuario, monto, mesa);
-        avisar(eventos.cambioPozo);
-        avisar(eventos.cambioEstadoMano);
-        avisar(eventos.cambioSaldoJugador);
-        avisar(eventos.cambioSituacionJugador);
-    }
-
-    public void pasarApuesta(UsuarioJugador usuario, Mesa mesa) throws PokerException {
-        sPoker.pasarApuesta(usuario, mesa);
-        avisar(eventos.cambioEstadoMano);
-        avisar(eventos.cambioSituacionJugador);
-    }
 }

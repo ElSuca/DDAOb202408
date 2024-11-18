@@ -10,7 +10,7 @@ import panelCartasPoker.CartaPoker;
 public class Escalera extends Figura {
     
     public Escalera(String tipoFigura) {
-        super(tipoFigura);
+        super(tipoFigura,4);
     }
 
     @Override
@@ -28,7 +28,8 @@ public class Escalera extends Figura {
         if(pos > 4) return false;
         else if(pos == 0) return estaOrdenadoAscRec(cartas, pos+1);
         else{
-            if(cartas.get(pos).getValorCarta() > cartas.get(pos-1).getValorCarta()) return true && estaOrdenadoAscRec(cartas, pos+1); 
+            if(cartas.get(pos).getValorCarta() > cartas.get(pos-1).getValorCarta() 
+                    && cartas.get(pos-1).getValorCarta() != 1) return true && estaOrdenadoAscRec(cartas, pos+1); 
             else return false;
         }
     }
@@ -41,7 +42,8 @@ public class Escalera extends Figura {
         if(pos > 4) return false;
         else if(pos == 0) return estaOrdenadoAscRec(cartas, pos+1);
         else{
-            if(cartas.get(pos).getValorCarta() < cartas.get(pos-1).getValorCarta()) return true && estaOrdenadoAscRec(cartas, pos+1); 
+            if(cartas.get(pos).getValorCarta() < cartas.get(pos-1).getValorCarta() 
+                    && cartas.get(pos).getValorCarta() != 1) return true && estaOrdenadoAscRec(cartas, pos+1); 
             else return false;
         }
     }

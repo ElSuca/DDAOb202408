@@ -9,7 +9,7 @@ import panelCartasPoker.CartaPoker;
 
 public class SinFigura extends Figura {
     public SinFigura(String tipoFigura) {
-        super(tipoFigura);
+        super(tipoFigura, 1);
     }
 
     @Override

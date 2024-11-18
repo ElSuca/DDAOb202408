@@ -7,6 +7,7 @@ package vistaJugador;
 import controladores.PokerController;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.EstadoMano;
 import modelo.EstadoMesa;
 import modelo.Mesa;
 import modelo.Figura;
@@ -35,7 +36,6 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
         if (mesa.getEstado() == EstadoMesa.Iniciada) {
             cargarCartas();
         }
-
     }
 
     /**
@@ -333,7 +333,7 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
         // TODO add your handling code here:
-        String monto = txtMonto.getText();
+        String monto = lblApuesta.getText();
         controlador.pagarApuesta(usuario, monto);
     }//GEN-LAST:event_btnPagarActionPerformed
 
@@ -347,14 +347,14 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        if (mesa.getEstado().equals(EstadoMesa.Abierta)) {
+        if (mesa.getEstado().equals(EstadoMesa.Abierta) || mesa.getManos().getLast().getEstado().equals(EstadoMano.Terminada)) {
             controlador.salirMesa(usuario);
             dispose();
         }
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnPedirCartasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedirCartasActionPerformed
-        
+        controlador.pedirCartas(usuario);
     }//GEN-LAST:event_btnPedirCartasActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -413,15 +413,6 @@ public class JugarPoker extends javax.swing.JDialog implements vistaJugarPoker {
             listado.add(j.getNombreCompleto());
         }
         listaJugadores.setListData(listado.toArray());
-    }
-
-    @Override
-    public void iniciarPartida(ArrayList<Figura> figuras) {
-        controlador.pagarLuz();
-        controlador.barajarCartas();
-        controlador.repartirCartas();
-        controlador.iniciarMano();
-        mostrarDatosMesa(figuras);
     }
 
     @Override
